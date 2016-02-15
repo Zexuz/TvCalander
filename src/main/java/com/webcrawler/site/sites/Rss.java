@@ -31,15 +31,7 @@ public class Rss extends Site {
         return null;
     }
 
-
-    // TODO: 2016-02-12
-    /*
-
-    Needs to convert a torrent rss feed to a more "general" json object.
-
-     */
-
-    public JSONArray getItem() throws Exception {
+    public JSONArray getItems() throws Exception {
         return getRss().getJSONObject("rss").getJSONObject("channel").getJSONArray("item");
     }
 

@@ -24,7 +24,7 @@ public class MainThread implements Runnable {
         Rss rss = new Rss("https://www.torrentday.com");
         rss.setPath("/torrents/rss?download;1;2;3;5;7;11;13;14;21;22;24;25;26;31;32;33;44;46;u=2191010;tp=38a72acbc991348fd6e82c80ca12625d");
 
-        siteManager.addSite(rss);
+        siteManager.addSite("rss",rss);
 
 
         System.out.println(siteManager.getSites().get(0).getPath());

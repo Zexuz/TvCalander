@@ -27,7 +27,7 @@ public class MainThread implements Runnable {
         siteManager.addSite("rss",rss);
 
 
-        System.out.println(siteManager.getSites().get(0).getPath());
+        System.out.println(siteManager.getSite("rss").getPath());
 
 /*
 

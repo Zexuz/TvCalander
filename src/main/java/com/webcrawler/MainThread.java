@@ -1,6 +1,7 @@
 package com.webcrawler;
 
 import com.webcrawler.site.SiteManager;
+import com.webcrawler.site.sites.Rss;
 import com.webcrawler.task.TaskManager;
 
 public class MainThread implements Runnable {
@@ -15,14 +16,39 @@ public class MainThread implements Runnable {
     private MainThread() {
         siteManager = new SiteManager();
         taskManager = new TaskManager();
+        start();
     }
 
     @Override
     public void run() {
+        Rss rss = new Rss("https://www.torrentday.com");
+        rss.setPath("/torrents/rss?download;1;2;3;5;7;11;13;14;21;22;24;25;26;31;32;33;44;46;u=2191010;tp=38a72acbc991348fd6e82c80ca12625d");
+
+        siteManager.addSite(rss);
+
+
+        System.out.println(siteManager.getSites().get(0).getPath());
+
+/*
+
+
+        rss.load();
+        try {
+            rss.getItem();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+ */
+
+        running = false;
+
 
         while (running) {
         }
 
+
+        stop();
     }
 
 
@@ -55,6 +81,10 @@ public class MainThread implements Runnable {
 
     public static MainThread getInstance() {
         return singleton;
+    }
+
+    public static void main(String args[]) {
+        getInstance();
     }
 
 }

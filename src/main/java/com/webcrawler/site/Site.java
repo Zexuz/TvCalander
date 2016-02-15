@@ -10,7 +10,7 @@ public abstract class Site implements SiteInterface {
     private Document doc;
 
 
-    public void Site(String url) {
+    public Site(String url) {
         this.url = url;
     }
 
@@ -36,6 +36,10 @@ public abstract class Site implements SiteInterface {
 
     public void empty() {
         doc = null;
+    }
+
+    public Document getDoc(){
+        return this.doc;
     }
 
     /**

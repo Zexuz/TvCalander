@@ -3,6 +3,10 @@ package com.webcrawler.site.sites;
 import com.webcrawler.site.Site;
 
 public class TBP extends Site {
+    public TBP(String url) {
+        super(url);
+    }
+
     /**
      * Searches for the thing String casted as a param and returns a object if match is found.
      *

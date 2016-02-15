@@ -27,10 +27,10 @@ public class WebConnection {
         this.cookies = new HashMap<>();
     }
 
-    public Document getDocument(){
+    public Document getDocument(String path){
         while (true) {
             try {
-                Connection.Response response = Jsoup.connect(url)
+                Connection.Response response = Jsoup.connect(url + path)
                         .userAgent(header)
                         .referrer(referrer)
                         .timeout(timeout)

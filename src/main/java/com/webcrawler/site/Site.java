@@ -8,9 +8,10 @@ public abstract class Site implements SiteInterface {
     private String url;
     private String path;
     private Document doc;
-
+    private WebConnection webConn;
 
     public Site(String url) {
+        webConn = new WebConnection(url);
         this.url = url;
     }
 
@@ -31,14 +32,14 @@ public abstract class Site implements SiteInterface {
     }
 
     public void load() {
-        doc = WebConnection.getDocument(getUrl() + getPath());
+        doc = webConn.getDocument(path);
     }
 
     public void empty() {
         doc = null;
     }
 
-    public Document getDoc(){
+    public Document getDoc() {
         return this.doc;
     }
 

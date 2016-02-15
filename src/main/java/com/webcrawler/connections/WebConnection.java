@@ -5,20 +5,36 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class WebConnection {
 
     public static final String HEADER_MOBILE = "Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
     public static final String REFERRER_GOOGLE = "http://www.google.com";
 
+    private String header;
+    private String referrer;
+    private String url;
+    private HashMap<String,String> cookies;
+    private int timeout;
 
-    public static Document getDocument(String url, String header, String referrer) {
+    public WebConnection(String url) {
+        this.header = HEADER_MOBILE;
+        this.referrer = REFERRER_GOOGLE;
+
+        this.url = url;
+        this.timeout = 10 * 1000;
+        this.cookies = new HashMap<>();
+    }
+
+    public Document getDocument(){
         while (true) {
             try {
                 Connection.Response response = Jsoup.connect(url)
                         .userAgent(header)
                         .referrer(referrer)
-                        .timeout(1000 * 10)
+                        .timeout(timeout)
+                        .cookies(cookies)
                         .execute();
 
                 if (response.statusCode() == 200) {
@@ -28,18 +44,53 @@ public class WebConnection {
                 } else if (response.statusCode() == 404) {
                     System.out.println("null!");
                     return null;
+                } else {
+                    System.exit(-11);
                 }
 
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
-    public static Document getDocument(String url) {
-        return getDocument(url, HEADER_MOBILE, REFERRER_GOOGLE);
+    public String getHeader() {
+        return header;
     }
 
+    public void setHeader(String header) {
+        this.header = header;
+    }
 
+    public String getReferrer() {
+        return referrer;
+    }
+
+    public void setReferrer(String referrer) {
+        this.referrer = referrer;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public HashMap<String, String> getCookies() {
+        return cookies;
+    }
+
+    public void setCookies(HashMap<String, String> cookies) {
+        this.cookies = cookies;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
 }

@@ -1,4 +1,6 @@
-package com.webcrawler.task;
+package com.webcrawler.managers;
+
+import com.webcrawler.task.Task;
 
 import java.util.ArrayList;
 

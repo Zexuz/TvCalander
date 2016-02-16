@@ -8,7 +8,7 @@ public abstract class Site implements SiteInterface {
     private String url;
     private String path;
     private Document doc;
-    private WebConnection webConn;
+    protected WebConnection webConn;
 
     public Site(String url) {
         webConn = new WebConnection(url);
@@ -43,11 +43,4 @@ public abstract class Site implements SiteInterface {
         return this.doc;
     }
 
-    /**
-     * Searches for the thing String casted as a param and returns a object if match is found.
-     *
-     * @param name The name or id to search for.
-     * @return A object, Can be anything.
-     */
-    public abstract Object find(String name);
 }

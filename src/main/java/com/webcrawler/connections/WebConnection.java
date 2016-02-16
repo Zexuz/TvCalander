@@ -74,10 +74,6 @@ public class WebConnection {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public HashMap<String, String> getCookies() {
         return cookies;
     }

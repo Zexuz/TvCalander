@@ -1,30 +1,84 @@
 package com.webcrawler.site.sites;
 
 import com.webcrawler.site.Site;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
-public class Imdb extends Site{
+import java.util.ArrayList;
+
+public class Imdb extends Site {
+
+    // TODO: 2016-02-16
+    /*
+
+    Only methods that is active
+
+    isPageValid(ImdbId)
+    getInfo
+    getSeason
+    getEpisodes
+
+    getIds(start,end)
+     */
+
     public Imdb(String url) {
         super(url);
     }
 
-    /**
-     * Searches for the thing String casted as a param and returns a object if match is found.
-     *
-     * @param name The name or id to search for.
-     * @return A object, Can be anything.
-     */
-    @Override
-    public Object find(String name) {
-        return null;
+    public ArrayList<String> getIds(int start, int end) {
+        ArrayList<String> ids = new ArrayList<>();
+
+        int count = 50;
+
+        if (end < count)
+            count = end;
+
+        System.out.println(count);
+
+        for (int i = start; i < end; i += count) {
+
+            if (end - i < count)
+                count = end - i;
+
+            setPath("/search/title?title_type=tv_series&start=" + i + "&count=" + count);
+            Document doc = webConn.getDocument(getPath());
+
+
+            Elements links = doc.select("tr.detailed td.title a");
+
+            for (Element link : links) {
+                if (link.children().size() != 0)
+                    continue;
+
+                if (!link.attr("href").contains("/title/tt"))
+                    continue;
+
+                String address = link.attr("href");
+                ids.add(address.substring(address.length() - 8, address.length() - 1));
+            }
+
+        }
+
+
+        return ids;
     }
 
-    // TODO: 2016-02-12
-    /*
-        Need to be able to get new ids from this url http://www.imdb.com/search/title?title_type=tv_series
+    public boolean isPageValid(String imdbId) {
+        return isActive() && hasTitle() && hasSeries();
+    }
 
-        Needs all the scraper methods from old version.
+    private boolean isActive() {
+        return false;
+    }
 
-     */
+    private boolean hasTitle() {
+        return false;
+    }
+
+    private boolean hasSeries() {
+        return false;
+    }
 
 
 }

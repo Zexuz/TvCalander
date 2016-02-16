@@ -1,14 +1,6 @@
 package com.webcrawler;
 
-import com.webcrawler.misc.Common;
-import com.webcrawler.site.SiteManager;
-import com.webcrawler.site.sites.Rss;
-import com.webcrawler.site.sites.TPB;
-import com.webcrawler.task.TaskManager;
-import com.webcrawler.torrent.Torrent;
-import com.webcrawler.torrent.TorrentManager;
-
-import java.util.ArrayList;
+import com.webcrawler.managers.Managers;
 
 public class MainThread implements Runnable {
 
@@ -16,14 +8,10 @@ public class MainThread implements Runnable {
     private boolean running = false;
     private boolean pause = false;
 
-    public SiteManager siteManager;
-    public TaskManager taskManager;
-    public TorrentManager torrentManager;
+    public Managers managers;
 
     private MainThread() {
-        siteManager = new SiteManager();
-        taskManager = new TaskManager();
-        torrentManager = new TorrentManager();
+        managers = new Managers();
 
         start();
     }
@@ -33,11 +21,6 @@ public class MainThread implements Runnable {
         // Rss rss = new Rss("https://www.torrentday.com");
         // rss.setPath("/torrents/rss?download;1;2;3;5;7;11;13;14;21;22;24;25;26;31;32;33;44;46;u=2191010;tp=38a72acbc991348fd6e82c80ca12625d");
 
-
-        TPB tpb = new TPB();
-        tpb.setPath("/recent/0");
-
-        System.out.println(Common.toJson(torrentManager.getTorrentTPB(tpb)));
 /*
 
 
@@ -50,6 +33,7 @@ public class MainThread implements Runnable {
 
  */
 
+        managers.getSiteManager().getImdbIds(0,60);
         running = false;
 
 

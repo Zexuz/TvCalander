@@ -11,7 +11,7 @@ public class Season {
     public Season(int season) {
         this.season = season;
 
-        episodes = new ArrayList<Episode>();
+        episodes = new ArrayList<>();
     }
 
 

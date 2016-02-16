@@ -2,23 +2,30 @@ package com.webcrawler.site.sites;
 
 import com.webcrawler.connections.WebConnection;
 import com.webcrawler.site.Site;
+import com.webcrawler.torrent.Torrent;
+import com.webcrawler.managers.TorrentManager;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TPB extends Site {
 
     private static String str = "http://www.pirateproxy.pw";
 
+    private TorrentManager torrentManager;
 
-    private WebConnection webConn;
-
-    public TPB() {
+    public TPB(TorrentManager torrentManager) {
         super(str);
-        webConn = new WebConnection(str);
+
+        this.torrentManager = torrentManager;
+
+        webConn.setCookies(getCookies());
     }
 
     public void next() {
@@ -39,42 +46,52 @@ public class TPB extends Site {
         setPath(path + --currentIndex);
     }
 
-    /**
-     * Searches for the thing String casted as a param and returns a object if match is found.
-     *
-     * @param name The name or id to search for.
-     * @return A object, Can be anything.
-     */
-    @Override
-    public Object find(String name) {
-        return null;
-    }
-
-    // TODO: 2016-02-12
-    /*
-        Get latest Torrents
-
-        Needs all the scraper methods from old version.
-
-     */
-
     public WebConnection getWebConn() {
         return webConn;
     }
 
     public HashMap<String, String> getCookies(){
-        Document response = null;
-        Connection.Response res = null;
         try {
-            res = Jsoup.connect("https://pirateproxy.pw/switchview.php?view=s")
+            Connection.Response res = Jsoup.connect("https://pirateproxy.pw/switchview.php?view=s")
                     .userAgent(WebConnection.HEADER_MOBILE)
                     .referrer(WebConnection.REFERRER_GOOGLE)
                     .data("view", "s")
                     .execute();
+
+            return (HashMap<String, String>) res.cookies();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return (HashMap<String, String>) res.cookies();
+
+        return null;
 
     }
+
+
+    public ArrayList<Torrent> getTorrentsForSite() {
+
+        Document doc = getWebConn().getDocument(getPath());
+
+        Element mainInfo = doc.getElementById("searchResult").getElementsByTag("tbody").first();
+        Elements torrentElements = mainInfo.getElementsByTag("tr");
+
+        ArrayList<Torrent> torrents = new ArrayList<>();
+
+
+        for (int i = 0; i < torrentElements.size()-1; i++) {
+            Element e = torrentElements.get(i);
+            Elements torrentInfo = e.getElementsByTag("td");
+
+
+            torrents.add(torrentManager.createTorrent(torrentInfo.get(1).text()));
+
+
+        }
+
+
+        return torrents;
+
+    }
+
 }

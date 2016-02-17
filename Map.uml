@@ -2,12 +2,67 @@
 <Diagram>
   <ID>JAVA</ID>
   <OriginalElement />
-  <nodes />
+  <nodes>
+    <node x="348.0" y="66.5">com.webcrawler.site.sites.Imdb</node>
+    <node x="0.0" y="610.0">com.webcrawler.series.ImdbSeries</node>
+    <node x="613.5" y="244.0">com.webcrawler.managers.TorrentManager</node>
+    <node x="196.0" y="55.0">com.webcrawler.site.sites.Rss</node>
+    <node x="197.00000000000003" y="244.0">com.webcrawler.managers.SiteManager</node>
+    <node x="383.66666666666663" y="345.0">com.webcrawler.managers.Managers</node>
+    <node x="491.0" y="0.0">com.webcrawler.torrent.Torrent</node>
+    <node x="387.66666666666663" y="491.0">com.webcrawler.MainThread</node>
+    <node x="0.0" y="33.0">com.webcrawler.site.sites.TPB</node>
+  </nodes>
   <notes />
-  <edges />
-  <settings layout="Hierarchic Group" zoom="1.0" x="0.0" y="0.0" />
+  <edges>
+    <edge source="com.webcrawler.managers.TorrentManager" target="com.webcrawler.torrent.Torrent">
+      <point x="0.0" y="-25.5" />
+      <point x="0.0" y="92.0" />
+    </edge>
+    <edge source="com.webcrawler.managers.SiteManager" target="com.webcrawler.site.sites.Imdb">
+      <point x="32.5" y="-25.5" />
+      <point x="294.5" y="214.0" />
+      <point x="378.75" y="214.0" />
+      <point x="-30.75" y="25.5" />
+    </edge>
+    <edge source="com.webcrawler.managers.SiteManager" target="com.webcrawler.site.sites.Rss">
+      <point x="10.833333333333314" y="-25.5" />
+      <point x="272.83333333333337" y="204.0" />
+      <point x="295.0" y="204.0" />
+      <point x="33.0" y="37.0" />
+    </edge>
+    <edge source="com.webcrawler.managers.Managers" target="com.webcrawler.managers.SiteManager">
+      <point x="-19.499999999999943" y="-48.0" />
+      <point x="442.1666666666667" y="315.0" />
+      <point x="294.5" y="315.0" />
+      <point x="32.5" y="25.5" />
+    </edge>
+    <edge source="com.webcrawler.managers.SiteManager" target="com.webcrawler.site.sites.TPB">
+      <point x="-54.166666666666686" y="-25.5" />
+      <point x="207.83333333333334" y="224.0" />
+      <point x="44.0" y="224.0" />
+      <point x="-44.0" y="59.0" />
+    </edge>
+    <edge source="com.webcrawler.managers.Managers" target="com.webcrawler.managers.TorrentManager">
+      <point x="19.500000000000057" y="-48.0" />
+      <point x="481.1666666666667" y="315.0" />
+      <point x="651.0" y="315.0" />
+      <point x="-37.5" y="25.5" />
+    </edge>
+    <edge source="com.webcrawler.MainThread" target="com.webcrawler.managers.Managers">
+      <point x="37.0" y="-37.0" />
+      <point x="498.66666666666663" y="466.0" />
+      <point x="500.66666666666663" y="466.0" />
+      <point x="39.0" y="48.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="443.0" y="364.0" />
   <SelectedNodes />
-  <Categories />
+  <Categories>
+    <Category>Properties</Category>
+    <Category>Constructors</Category>
+  </Categories>
   <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
 </Diagram>
 

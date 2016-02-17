@@ -12,30 +12,15 @@ public class MainThread implements Runnable {
 
     private MainThread() {
         managers = new Managers();
-
         start();
     }
 
     @Override
     public void run() {
-        // Rss rss = new Rss("https://www.torrentday.com");
-        // rss.setPath("/torrents/rss?download;1;2;3;5;7;11;13;14;21;22;24;25;26;31;32;33;44;46;u=2191010;tp=38a72acbc991348fd6e82c80ca12625d");
 
-/*
-
-
-        rss.load();
-        try {
-            rss.getItem();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
- */
-
-        managers.getSiteManager().getImdbIds(0,60);
         running = false;
 
+        managers.tick();
 
         while (running) {
         }

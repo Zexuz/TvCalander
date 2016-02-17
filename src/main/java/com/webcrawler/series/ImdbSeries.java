@@ -1,13 +1,15 @@
 package com.webcrawler.series;
 
+import com.webcrawler.site.Site;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ImdbSeries {
+public class ImdbSeries extends Site {
 
+    private static final String url = "http://m.imdb.com";
 
     // TODO: 2016-02-16
     /*
@@ -16,27 +18,20 @@ public class ImdbSeries {
 
     private String id;
     private String title = null;
-    private Element page = null;
 
-    public ImdbSeries(String id, String title) {
+    public ImdbSeries(String id){
+        super(url);
         this.id = id;
-        this.title = title;
+        load();
     }
 
-    public ImdbSeries(String id) {
-        this.id = id;
-    }
 
-    public boolean isPageValid(String imdbId) {
-        return isActive() && hasValidHeader() && hasSeason();
-    }
-
-    private boolean isActive() {
-        return false;
+    public boolean isPageValid() {
+        return hasValidHeader();
     }
 
     private boolean hasValidHeader() {
-        Elements titleElement = page.getElementsByTag("h1");
+        Elements titleElement = getDoc().getElementsByTag("h1");
 
         if (titleElement.size() == 0)
             return false;
@@ -58,7 +53,7 @@ public class ImdbSeries {
     }
 
     private boolean hasSeason() {
-        Element section = page.getElementById("titleOverview");
+        Element section = getDoc().getElementById("titleOverview");
 
         for (Element a : section.getElementsByTag("a"))
             if (a.text().equalsIgnoreCase("Episode Guide") && a.attr("href").contains(id + "")) return true;
@@ -70,7 +65,6 @@ public class ImdbSeries {
         return id;
     }
 
-
     public String getTitle() {
         return title;
     }
@@ -79,11 +73,4 @@ public class ImdbSeries {
         this.title = title;
     }
 
-    public Element getPage() {
-        return page;
-    }
-
-    public void setPage(Element page) {
-        this.page = page;
-    }
 }

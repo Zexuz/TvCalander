@@ -7,12 +7,12 @@ public abstract class Site implements SiteInterface {
 
     private String url;
     private String path;
-    private Document doc;
+    protected Document doc;
     protected WebConnection webConn;
 
     public Site(String url) {
-        webConn = new WebConnection(url);
         this.url = url;
+        webConn = new WebConnection(url);
     }
 
     public String getUrl() {

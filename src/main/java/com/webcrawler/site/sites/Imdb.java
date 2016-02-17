@@ -64,21 +64,5 @@ public class Imdb extends Site {
         return ids;
     }
 
-    public boolean isPageValid(String imdbId) {
-        return isActive() && hasTitle() && hasSeries();
-    }
-
-    private boolean isActive() {
-        return false;
-    }
-
-    private boolean hasTitle() {
-        return false;
-    }
-
-    private boolean hasSeries() {
-        return false;
-    }
-
 
 }

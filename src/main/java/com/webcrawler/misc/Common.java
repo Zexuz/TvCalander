@@ -73,6 +73,13 @@ public class Common {
         }
     }
 
+    public static String reformatTitle(String title) {
+        title = title.toLowerCase();
+        title = title.replace('.', ' ');
+        title = title.replace('-', ' ');
+
+        return title;
+    }
 }
 
 class SuperclassExclusionStrategy implements ExclusionStrategy {

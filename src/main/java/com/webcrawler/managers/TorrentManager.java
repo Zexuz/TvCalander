@@ -7,7 +7,7 @@ public class TorrentManager {
     public TorrentManager() {
     }
 
-    public Torrent createTorrent(String name) {
+    public static Torrent createTorrent(String name) {
         return new Torrent(name);
     }
 

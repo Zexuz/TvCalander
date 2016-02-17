@@ -16,15 +16,8 @@ import java.util.HashMap;
 
 public class TPB extends Site {
 
-    private static String str = "http://www.pirateproxy.pw";
-
-    private TorrentManager torrentManager;
-
-    public TPB(TorrentManager torrentManager) {
-        super(str);
-
-        this.torrentManager = torrentManager;
-
+    public TPB(String url) {
+        super(url);
         webConn.setCookies(getCookies());
     }
 
@@ -68,7 +61,6 @@ public class TPB extends Site {
 
     }
 
-
     public ArrayList<Torrent> getTorrentsForSite() {
 
         Document doc = getWebConn().getDocument(getPath());
@@ -83,10 +75,7 @@ public class TPB extends Site {
             Element e = torrentElements.get(i);
             Elements torrentInfo = e.getElementsByTag("td");
 
-
-            torrents.add(torrentManager.createTorrent(torrentInfo.get(1).text()));
-
-
+            torrents.add(TorrentManager.createTorrent(torrentInfo.get(1).text()));
         }
 
 

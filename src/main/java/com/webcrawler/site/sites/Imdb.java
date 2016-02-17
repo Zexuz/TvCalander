@@ -9,19 +9,6 @@ import java.util.ArrayList;
 
 public class Imdb extends Site {
 
-    // TODO: 2016-02-16
-    /*
-
-    Only methods that is active
-
-    isPageValid(ImdbId)
-    getInfo
-    getSeason
-    getEpisodes
-
-    getIds(start,end)
-     */
-
     public Imdb(String url) {
         super(url);
     }
@@ -63,6 +50,7 @@ public class Imdb extends Site {
 
         return ids;
     }
+
 
 
 }

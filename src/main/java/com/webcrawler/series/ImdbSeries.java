@@ -22,6 +22,9 @@ public class ImdbSeries extends Site {
     public ImdbSeries(String id){
         super(url);
         this.id = id;
+
+
+        setPath("/title/tt"+id);
         load();
     }
 

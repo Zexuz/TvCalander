@@ -34,8 +34,21 @@ public class SiteManager {
     }
 
 
-    public ArrayList<Torrent> getRecentTorrents(){
+    public ArrayList<Torrent> getRecentTorrentPages(int pages) {
+
+        ArrayList<Torrent> t = new ArrayList<>();
+
+        for (int i = 0; i < pages; i++) {
+            t.addAll(thePirateBay.getTorrentsForSite());
+            thePirateBay.next();
+        }
+
+        return t;
+    }
+
+    public ArrayList<Torrent> getPage() {
         return thePirateBay.getTorrentsForSite();
     }
+
 
 }

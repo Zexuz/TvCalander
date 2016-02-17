@@ -4,6 +4,8 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.webcrawler.series.ImdbSeries;
+import com.webcrawler.torrent.Torrent;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -74,11 +76,21 @@ public class Common {
     }
 
     public static String reformatTitle(String title) {
-        title = title.toLowerCase();
-        title = title.replace('.', ' ');
-        title = title.replace('-', ' ');
+
+        try{
+            title = title.toLowerCase();
+            title = title.replace('.', ' ');
+            title = title.replace('-', ' ');
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         return title;
+    }
+
+    public static boolean isTorrentMatch(ImdbSeries imdbSeries, Torrent torrent) {
+        String imdbSeriesTitle = reformatTitle(imdbSeries.getTitle());
+        return torrent.getTitle().contains(imdbSeriesTitle);
     }
 }
 

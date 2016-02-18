@@ -108,7 +108,7 @@ public class Common {
 
         String onlyTitle  = torrent.getTitle().substring(0,torrent.getTitle().indexOf(version));
 
-        return onlyTitle.equals(imdbSeriesTitle);
+        return onlyTitle.trim().equals(imdbSeriesTitle.trim());
 
     }
 }

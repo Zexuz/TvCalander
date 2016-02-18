@@ -65,21 +65,26 @@ public class TPB extends Site {
 
         Document doc = getWebConn().getDocument(getPath());
 
-        Element mainInfo = doc.getElementById("searchResult").getElementsByTag("tbody").first();
-        Elements torrentElements = mainInfo.getElementsByTag("tr");
+        try{
+            Element mainInfo = doc.getElementById("searchResult").getElementsByTag("tbody").first();
+            Elements torrentElements = mainInfo.getElementsByTag("tr");
 
-        ArrayList<Torrent> torrents = new ArrayList<>();
+            ArrayList<Torrent> torrents = new ArrayList<>();
 
 
-        for (int i = 0; i < torrentElements.size()-1; i++) {
-            Element e = torrentElements.get(i);
-            Elements torrentInfo = e.getElementsByTag("td");
+            for (int i = 0; i < torrentElements.size()-1; i++) {
+                Element e = torrentElements.get(i);
+                Elements torrentInfo = e.getElementsByTag("td");
 
-            torrents.add(TorrentManager.createTorrent(torrentInfo.get(1).text()));
+                torrents.add(TorrentManager.createTorrent(torrentInfo.get(1).text()));
+            }
+
+            return torrents;
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
-
-        return torrents;
+      return null;
 
     }
 

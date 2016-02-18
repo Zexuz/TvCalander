@@ -50,9 +50,9 @@ public class ImdbSeries extends Site {
                 continue;
 
             setTitle(element.text().substring(0, element.text().length() - matcher.group(0).length()).trim());
-            break;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private boolean hasSeason() {

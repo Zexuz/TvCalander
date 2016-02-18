@@ -16,14 +16,6 @@ public class Managers {
         siteManager = new SiteManager();
     }
 
-    public SiteManager getSiteManager() {
-        return siteManager;
-    }
-
-    public TorrentManager getTorrentManager() {
-        return torrentManager;
-    }
-
     public void tick() {
         // TODO: 2016-02-15
 
@@ -45,7 +37,7 @@ public class Managers {
         //2
         ArrayList<Torrent> torrents = siteManager.getRecentTorrentPages(10);
 
-        int maches = 0;
+        int matches = 0;
 
         ArrayList<Torrent> matchedTorrents = new ArrayList<>();
         for (String s : list) {
@@ -63,17 +55,24 @@ public class Managers {
             }
 
             for (Torrent torrent : torrents) {
+
+                if(!torrent.isSeries()){
+                    continue;
+                }
+
+
                 if (Common.isTorrentMatch(imdbSeries, torrent)) {
                    // System.out.println(Common.toJson(torrent));
+                    torrent.setMatch(imdbSeries.getTitle());
                     matchedTorrents.add(torrent);
-                    maches++;
+                    matches++;
                 }
 
             }
 
         }
 
-        System.out.println(String.format("the list was %d, found %d torrents, matches %d ", list.size(), torrents.size(), maches));
+        System.out.println(String.format("the list was %d, found %d torrents, matches %d ", list.size(), torrents.size(), matches));
         System.out.println(Common.toJson(matchedTorrents));
 
     }

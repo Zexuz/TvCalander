@@ -35,7 +35,7 @@ public class Managers {
 
 
         //2
-        ArrayList<Torrent> torrents = siteManager.getRecentTorrentPages(10);
+        ArrayList<Torrent> torrents = siteManager.getRecentTorrentPages(20);
 
         int matches = 0;
 

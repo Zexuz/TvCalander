@@ -87,17 +87,6 @@ public class Common {
     public static boolean isTorrentMatch(ImdbSeries imdbSeries, Torrent torrent) {
         String imdbSeriesTitle = reformatTitle(imdbSeries.getTitle());
 
-        // TODO: 2016-02-18
-        /*
-            TorrentTitle:arrow s04e14 hdtv x264 lol
-            Series title:arrow
-
-            TorrentTitle:supernatural s11e14 480p x264 msd
-            Series title:supernatural
-
-            Maybe implement a 100% match before the (sXXeXX)?
-         */
-
         if (!torrent.isSeries()) {
             return false;
         }
@@ -107,14 +96,20 @@ public class Common {
             return false;
         }
 
-        if(torrent.getTitle().indexOf(imdbSeriesTitle) > torrent.getTitle().indexOf(("s"+torrent.getSeasonNumber() + "e"+torrent.getEpisodeNumber()).toLowerCase())){
+        if (torrent.getTitle().indexOf(imdbSeriesTitle) > torrent.getTitle().indexOf("s" + torrent.getSeasonNumber() + "e" + torrent.getEpisodeNumber())) {
             System.out.println("the match is not done on the title");
             System.out.println("TorrentTitle:" + torrent.getTitle());
             System.out.println("Series title:" + imdbSeriesTitle);
             return false;
         }
 
-        return true;
+
+        String version = "s" + torrent.getSeasonNumber() + "e" + torrent.getEpisodeNumber();
+
+        String onlyTitle  = torrent.getTitle().substring(0,torrent.getTitle().indexOf(version));
+
+        return onlyTitle.equals(imdbSeriesTitle);
+
     }
 }
 

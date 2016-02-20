@@ -27,6 +27,17 @@ public class ImdbApi extends RestApi {
         return stringToSeries(data);
     }
 
+    public boolean addSeries(ImdbSeries series) {
+
+        try {
+            sendPost("Series", imdbSeriesToUrlString(series));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 
     private ArrayList<ImdbSeries> stringToSeries(String response) {
         ArrayList<ImdbSeries> series = new ArrayList<>();
@@ -42,6 +53,12 @@ public class ImdbApi extends RestApi {
         }
 
         return series;
+    }
+
+    private String imdbSeriesToUrlString(ImdbSeries series) {
+        String response;
+        response = "title=" + series.getTitle() + "&id=" + series.getId();
+        return response;
     }
 
 

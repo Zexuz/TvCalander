@@ -26,12 +26,17 @@ public class MainThread implements Runnable {
 
         ImdbApi imdbApi = new ImdbApi();
 
+
+        imdbApi.addSeries(new ImdbSeries("5645648"));
+
+
         for (ImdbSeries imdbSeries : imdbApi.getAllSeries()) {
             System.out.println(imdbSeries.getTitle());
             System.out.println(imdbSeries.getId());
             System.out.println("---------");
 
         }
+
 
 
         while (running) {

@@ -1,6 +1,8 @@
 package com.webcrawler;
 
+import com.webcrawler.connections.restapi.ImdbApi;
 import com.webcrawler.managers.Managers;
+import com.webcrawler.series.ImdbSeries;
 
 public class MainThread implements Runnable {
 
@@ -20,7 +22,17 @@ public class MainThread implements Runnable {
 
         running = false;
 
-        managers.tick();
+        //managers.tick();
+
+        ImdbApi imdbApi = new ImdbApi();
+
+        for (ImdbSeries imdbSeries : imdbApi.getAllSeries()) {
+            System.out.println(imdbSeries.getTitle());
+            System.out.println(imdbSeries.getId());
+            System.out.println("---------");
+
+        }
+
 
         while (running) {
         }

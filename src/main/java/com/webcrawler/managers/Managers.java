@@ -46,6 +46,8 @@ public class Managers {
         for (String s : imdbIds) {
 
             ImdbSeries imdbSeries = siteManager.getSeries(s);
+            imdbSeries.load();
+
             if (!imdbSeries.isPageValid()) {
                 System.out.println("not valid");
                 continue;

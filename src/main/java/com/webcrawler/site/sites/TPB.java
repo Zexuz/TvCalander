@@ -63,6 +63,7 @@ public class TPB extends Site {
 
     public ArrayList<Torrent> getTorrentsForSite() {
 
+        System.out.println(getPath());
         Document doc = getWebConn().getDocument(getPath());
 
         try{

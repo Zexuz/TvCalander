@@ -29,7 +29,7 @@ public class SiteManager {
         return imdb.getIds(start, end);
     }
 
-    public ImdbSeries getSeries(String id) {
+    public static ImdbSeries createImdbSeries(String id) {
         return new ImdbSeries(id);
     }
 

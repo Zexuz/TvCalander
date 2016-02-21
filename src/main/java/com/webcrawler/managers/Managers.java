@@ -39,6 +39,13 @@ public class Managers {
         /*
             We should only add series that is not already in the database
          */
+
+        // TODO: 2016-02-21
+        /*
+            Clean up project
+            Clean up code.
+
+         */
         if (!hasUpdateListToday) {
             hasUpdateListToday = true;
             for (String s : siteManager.getImdbIds(0, 50)) {

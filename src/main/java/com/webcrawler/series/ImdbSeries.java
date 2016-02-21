@@ -25,7 +25,6 @@ public class ImdbSeries extends Site {
 
 
         setPath("/title/tt"+id);
-        load();
     }
 
 

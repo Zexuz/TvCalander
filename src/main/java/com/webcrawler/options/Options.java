@@ -1,13 +1,10 @@
 package com.webcrawler.options;
 
 
-import com.webcrawler.MainThread;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Properties;
 
 public class Options {
@@ -27,15 +24,8 @@ public class Options {
         return simpleOptions.getProp().get(thePirateBayTag).toString().split(",");
     }
 
-    public URL getHostAndPortForREST() {
-        URL url;
-        try {
-            url = new URL("http", getOption("host").toString(), getOption("port").toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return url;
+    public String getHostAndPortForREST() {
+        return "http://" + getOption("host").toString() + ":" + getOption("port").toString();
     }
 
 }

@@ -7,7 +7,9 @@ import java.io.IOException;
 
 public class MainThread implements Runnable {
 
+
     private static MainThread singleton = new MainThread();
+    private  Options options;
     private boolean running = false;
     private boolean pause = false;
 
@@ -18,13 +20,15 @@ public class MainThread implements Runnable {
         start();
     }
 
+    // TODO: 2016-02-22  make a options manager
+
     @Override
     public void run() {
 
         running = false;
 
         //managers.tick();
-        Options options;
+
         try {
             options = new Options();
         } catch (IOException e) {
@@ -41,6 +45,10 @@ public class MainThread implements Runnable {
         }
 
 
+    }
+
+    public Object getOptionsProp(String prop){
+        return options.getOption(prop);
     }
 
 

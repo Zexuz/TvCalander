@@ -2,23 +2,33 @@ package com.webcrawler.managers;
 
 import com.webcrawler.connections.restapi.ImdbApi;
 import com.webcrawler.misc.Common;
+import com.webcrawler.options.Options;
 import com.webcrawler.series.ImdbSeries;
 import com.webcrawler.torrent.Torrent;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Managers {
-
+    // TODO: 2016-02-22
+    /*
+        change SiteManager to WebScraperManager?
+     */
     private SiteManager siteManager;
-
     private ImdbApi imdbApi;
-
-    private boolean hasUpdateListToday = false;
-
+    public Options options;
 
     public Managers() {
-        siteManager = new SiteManager();
-        imdbApi = new ImdbApi();
+        try {
+            options = new Options();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Can't read options.config file, exiting");
+            System.exit(9456);
+        }
+
+        siteManager = new SiteManager(this);
+        imdbApi = new ImdbApi(this);
 
     }
 
@@ -46,11 +56,10 @@ public class Managers {
             Clean up code.
 
          */
-        if (!hasUpdateListToday) {
-            hasUpdateListToday = true;
+        if (shouldScrapeImdb()) {
             for (String s : siteManager.getImdbIds(0, 50)) {
 
-                ImdbSeries imdbSeriesTemp = SiteManager.createImdbSeries(s);
+                ImdbSeries imdbSeriesTemp = Managers.createSeries(s);
 
                 imdbSeriesTemp.load();
 
@@ -79,16 +88,17 @@ public class Managers {
 
     }
 
+    private boolean shouldScrapeImdb() {
+        return false;
+    }
+
     private ArrayList<Torrent> pairTorrentAndSeries(ArrayList<Torrent> torrents, ArrayList<ImdbSeries> imdbSeriesArrayList) {
         ArrayList<Torrent> matchedTorrents = new ArrayList<>();
         for (ImdbSeries imdbSeries : imdbSeriesArrayList) {
 
             for (Torrent torrent : torrents) {
 
-                if (!torrent.isSeries()) {
-                    continue;
-                }
-
+                if (!torrent.isSeries()) continue;
 
                 if (Common.isTorrentMatch(imdbSeries, torrent)) {
                     torrent.setMatch(imdbSeries.getTitle());
@@ -100,4 +110,9 @@ public class Managers {
         }
         return matchedTorrents;
     }
+
+    public static ImdbSeries createSeries(String id) {
+        return new ImdbSeries(id);
+    }
+
 }

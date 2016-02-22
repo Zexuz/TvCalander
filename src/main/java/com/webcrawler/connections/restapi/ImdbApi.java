@@ -3,6 +3,7 @@ package com.webcrawler.connections.restapi;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.webcrawler.managers.Managers;
 import com.webcrawler.series.ImdbSeries;
 
 import java.io.IOException;
@@ -10,8 +11,10 @@ import java.util.ArrayList;
 
 public class ImdbApi extends RestApi {
 
-    public ImdbApi() {
-        super("http://localhost:7777", "ImdbService", "v1");
+
+    public ImdbApi(Managers managers) {
+        super(managers.options.getHostAndPortForREST(), "ImdbService", "v1");
+            System.out.println(managers.options.getHostAndPortForREST());
     }
 
     public ArrayList<ImdbSeries> getAllSeries() {
@@ -47,7 +50,7 @@ public class ImdbApi extends RestApi {
         JsonArray jsonArray = jsonResponse.getAsJsonArray();
 
         for (JsonElement jsonElement : jsonArray) {
-            ImdbSeries s = new ImdbSeries(jsonElement.getAsJsonObject().get("id").getAsString());
+            ImdbSeries s = Managers.createSeries(jsonElement.getAsJsonObject().get("id").getAsString());
             s.setTitle(jsonElement.getAsJsonObject().get("title").getAsString());
             series.add(s);
         }

@@ -4,9 +4,11 @@ import com.webcrawler.managers.Managers;
 
 public class MainThread implements Runnable {
 
-    private static MainThread singleton = new MainThread();
+
+    private final static MainThread singleton = new MainThread();
     private boolean running = false;
     private boolean pause = false;
+
 
     public Managers managers;
 
@@ -18,6 +20,7 @@ public class MainThread implements Runnable {
     @Override
     public void run() {
 
+
         running = false;
 
         managers.tick();
@@ -27,7 +30,6 @@ public class MainThread implements Runnable {
 
 
     }
-
 
     public synchronized void stop() {
         running = false;
@@ -61,7 +63,6 @@ public class MainThread implements Runnable {
     }
 
     public static void main(String args[]) {
-        getInstance();
     }
 
 }

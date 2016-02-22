@@ -3,64 +3,196 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="348.0" y="66.5">com.webcrawler.site.sites.Imdb</node>
-    <node x="0.0" y="610.0">com.webcrawler.series.ImdbSeries</node>
-    <node x="613.5" y="244.0">com.webcrawler.managers.TorrentManager</node>
-    <node x="196.0" y="55.0">com.webcrawler.site.sites.Rss</node>
-    <node x="197.00000000000003" y="244.0">com.webcrawler.managers.SiteManager</node>
-    <node x="383.66666666666663" y="345.0">com.webcrawler.managers.Managers</node>
-    <node x="491.0" y="0.0">com.webcrawler.torrent.Torrent</node>
-    <node x="387.66666666666663" y="491.0">com.webcrawler.MainThread</node>
-    <node x="0.0" y="33.0">com.webcrawler.site.sites.TPB</node>
+    <node x="716.5" y="644.0">com.webcrawler.site.sites.Imdb</node>
+    <node x="514.0" y="1076.0">com.webcrawler.options.Options</node>
+    <node x="1051.5" y="599.5">com.webcrawler.series.ImdbSeries</node>
+    <node x="1346.5" y="864.0">com.webcrawler.connections.restapi.ImdbApi</node>
+    <node x="324.9750000000001" y="399.5">com.webcrawler.managers.TorrentManager</node>
+    <node x="879.5" y="632.5">com.webcrawler.site.sites.Rss</node>
+    <node x="660.3500000000001" y="864.0">com.webcrawler.managers.SiteManager</node>
+    <node x="515.0" y="54.5">com.webcrawler.connections.WebConnection</node>
+    <node x="700.0" y="1076.0">com.webcrawler.managers.Managers</node>
+    <node x="0.0" y="0.0">com.webcrawler.torrent.Torrent</node>
+    <node x="548.5" y="1244.0">com.webcrawler.MainThread</node>
+    <node x="395.1000000000001" y="599.5">com.webcrawler.site.sites.TPB</node>
+    <node x="942.9432692307691" y="110.5">com.webcrawler.site.SiteInterface</node>
+    <node x="93.8115384615387" y="843.0">com.webcrawler.misc.Common</node>
+    <node x="1324.5" y="589.0">com.webcrawler.connections.restapi.RestApi</node>
+    <node x="832.4432692307691" y="344.0">com.webcrawler.site.Site</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="com.webcrawler.managers.TorrentManager" target="com.webcrawler.torrent.Torrent">
-      <point x="0.0" y="-25.5" />
-      <point x="0.0" y="92.0" />
+    <edge source="com.webcrawler.site.Site" target="com.webcrawler.site.SiteInterface">
+      <point x="58.5" y="-92.5" />
+      <point x="0.0" y="36.5" />
     </edge>
-    <edge source="com.webcrawler.managers.SiteManager" target="com.webcrawler.site.sites.Imdb">
-      <point x="32.5" y="-25.5" />
-      <point x="294.5" y="214.0" />
-      <point x="378.75" y="214.0" />
-      <point x="-30.75" y="25.5" />
-    </edge>
-    <edge source="com.webcrawler.managers.SiteManager" target="com.webcrawler.site.sites.Rss">
-      <point x="10.833333333333314" y="-25.5" />
-      <point x="272.83333333333337" y="204.0" />
-      <point x="295.0" y="204.0" />
-      <point x="33.0" y="37.0" />
+    <edge source="com.webcrawler.connections.restapi.ImdbApi" target="com.webcrawler.series.ImdbSeries">
+      <point x="-47.5" y="-70.5" />
+      <point x="1394.0" y="823.0" />
+      <point x="1272.875" y="823.0" />
+      <point x="94.875" y="81.5" />
     </edge>
     <edge source="com.webcrawler.managers.Managers" target="com.webcrawler.managers.SiteManager">
-      <point x="-19.499999999999943" y="-48.0" />
-      <point x="442.1666666666667" y="315.0" />
-      <point x="294.5" y="315.0" />
-      <point x="32.5" y="25.5" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
-    <edge source="com.webcrawler.managers.SiteManager" target="com.webcrawler.site.sites.TPB">
-      <point x="-54.166666666666686" y="-25.5" />
-      <point x="207.83333333333334" y="224.0" />
-      <point x="44.0" y="224.0" />
-      <point x="-44.0" y="59.0" />
+    <edge source="com.webcrawler.site.sites.TPB" target="com.webcrawler.connections.WebConnection">
+      <point x="27.0" y="-81.5" />
+      <point x="530.1000000000001" y="549.0" />
+      <point x="590.25" y="549.0" />
+      <point x="-75.25" y="92.5" />
     </edge>
-    <edge source="com.webcrawler.managers.Managers" target="com.webcrawler.managers.TorrentManager">
-      <point x="19.500000000000057" y="-48.0" />
-      <point x="481.1666666666667" y="315.0" />
-      <point x="651.0" y="315.0" />
-      <point x="-37.5" y="25.5" />
+    <edge source="com.webcrawler.site.sites.TPB" target="com.webcrawler.managers.TorrentManager">
+      <point x="-27.0" y="-81.5" />
+      <point x="476.1000000000001" y="559.0" />
+      <point x="409.9750000000001" y="559.0" />
+      <point x="0.0" y="37.0" />
+    </edge>
+    <edge source="com.webcrawler.managers.SiteManager" target="com.webcrawler.torrent.Torrent">
+      <point x="-84.0" y="-70.5" />
+      <point x="681.3500000000001" y="803.0" />
+      <point x="241.875" y="803.0" />
+      <point x="241.875" y="319.0" />
+      <point x="247.5" y="319.0" />
+      <point x="0.0" y="147.0" />
+    </edge>
+    <edge source="com.webcrawler.torrent.Torrent" target="com.webcrawler.torrent.Torrent">
+      <point x="0.0" y="0.0" />
+      <point x="247.5" y="698.1022935464409" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.webcrawler.misc.Common" target="com.webcrawler.series.ImdbSeries">
+      <point x="73.74999999999989" y="-91.5" />
+      <point x="315.0615384615386" y="813.0" />
+      <point x="1083.125" y="813.0" />
+      <point x="-94.875" y="81.5" />
+    </edge>
+    <edge source="com.webcrawler.managers.Managers" target="com.webcrawler.series.ImdbSeries">
+      <point x="35.200000000000045" y="-59.0" />
+      <point x="823.2" y="1046.0" />
+      <point x="1209.625" y="1046.0" />
+      <point x="31.625" y="81.5" />
+    </edge>
+    <edge source="com.webcrawler.site.sites.TPB" target="com.webcrawler.site.Site">
+      <point x="81.0" y="-81.5" />
+      <point x="584.1000000000001" y="559.0" />
+      <point x="861.6932692307691" y="559.0" />
+      <point x="-87.75" y="92.5" />
+    </edge>
+    <edge source="com.webcrawler.MainThread" target="com.webcrawler.MainThread">
+      <point x="0.0" y="0.0" />
+      <point x="684.0" y="730.6022935464409" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="com.webcrawler.MainThread" target="com.webcrawler.managers.Managers">
-      <point x="37.0" y="-37.0" />
-      <point x="498.66666666666663" y="466.0" />
-      <point x="500.66666666666663" y="466.0" />
-      <point x="39.0" y="48.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.webcrawler.site.sites.TPB" target="com.webcrawler.torrent.Torrent">
+      <point x="-81.0" y="-81.5" />
+      <point x="422.1000000000001" y="569.0" />
+      <point x="314.4750000000001" y="569.0" />
+      <point x="314.4750000000001" y="319.0" />
+      <point x="346.5" y="319.0" />
+      <point x="99.0" y="147.0" />
+    </edge>
+    <edge source="com.webcrawler.site.Site" target="com.webcrawler.connections.WebConnection">
+      <point x="-58.5" y="-92.5" />
+      <point x="890.9432692307691" y="319.0" />
+      <point x="740.75" y="319.0" />
+      <point x="75.25" y="92.5" />
+    </edge>
+    <edge source="com.webcrawler.site.sites.Imdb" target="com.webcrawler.site.Site">
+      <point x="0.0" y="-37.0" />
+      <point x="788.0" y="569.0" />
+      <point x="920.1932692307691" y="569.0" />
+      <point x="-29.25" y="92.5" />
+    </edge>
+    <edge source="com.webcrawler.series.ImdbSeries" target="com.webcrawler.site.Site">
+      <point x="0.0" y="-81.5" />
+      <point x="1178.0" y="569.0" />
+      <point x="1037.1932692307691" y="569.0" />
+      <point x="87.75" y="92.5" />
+    </edge>
+    <edge source="com.webcrawler.torrent.Torrent" target="com.webcrawler.misc.Common">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.webcrawler.managers.TorrentManager" target="com.webcrawler.torrent.Torrent">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.webcrawler.managers.SiteManager" target="com.webcrawler.site.sites.Imdb">
+      <point x="0.0" y="-70.5" />
+      <point x="765.3500000000001" y="803.0" />
+      <point x="788.0" y="803.0" />
+      <point x="0.0" y="37.0" />
+    </edge>
+    <edge source="com.webcrawler.connections.restapi.ImdbApi" target="com.webcrawler.connections.restapi.RestApi">
+      <point x="47.5" y="-70.5" />
+      <point x="0.0" y="92.0" />
+    </edge>
+    <edge source="com.webcrawler.managers.SiteManager" target="com.webcrawler.site.sites.Rss">
+      <point x="42.0" y="-70.5" />
+      <point x="807.3500000000001" y="803.0" />
+      <point x="955.5" y="803.0" />
+      <point x="0.0" y="48.5" />
+    </edge>
+    <edge source="com.webcrawler.managers.Managers" target="com.webcrawler.misc.Common">
+      <point x="-35.19999999999999" y="-59.0" />
+      <point x="752.8000000000001" y="1046.0" />
+      <point x="241.3115384615387" y="1046.0" />
+      <point x="0.0" y="91.5" />
+    </edge>
+    <edge source="com.webcrawler.managers.SiteManager" target="com.webcrawler.site.sites.TPB">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.webcrawler.MainThread" target="com.webcrawler.options.Options">
+      <point x="-72.0" y="-114.5" />
+      <point x="620.5" y="1219.0" />
+      <point x="597.0" y="1219.0" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="com.webcrawler.misc.Common" target="com.webcrawler.torrent.Torrent">
+      <point x="-73.75000000000011" y="-91.5" />
+      <point x="167.5615384615386" y="319.0" />
+      <point x="148.5" y="319.0" />
+      <point x="-99.0" y="147.0" />
+    </edge>
+    <edge source="com.webcrawler.managers.Managers" target="com.webcrawler.connections.restapi.ImdbApi">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.webcrawler.site.sites.Rss" target="com.webcrawler.site.Site">
+      <point x="0.0" y="-48.5" />
+      <point x="955.5" y="569.0" />
+      <point x="978.6932692307691" y="569.0" />
+      <point x="29.25" y="92.5" />
+    </edge>
+    <edge source="com.webcrawler.managers.Managers" target="com.webcrawler.torrent.Torrent">
+      <point x="-70.39999999999998" y="-59.0" />
+      <point x="717.6" y="1056.0" />
+      <point x="83.31153846153859" y="1056.0" />
+      <point x="83.31153846153859" y="319.0" />
+      <point x="49.5" y="319.0" />
+      <point x="-198.0" y="147.0" />
+    </edge>
+    <edge source="com.webcrawler.managers.SiteManager" target="com.webcrawler.series.ImdbSeries">
+      <point x="84.0" y="-70.5" />
+      <point x="849.3500000000001" y="823.0" />
+      <point x="1146.375" y="823.0" />
+      <point x="-31.625" y="81.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="443.0" y="364.0" />
-  <SelectedNodes />
+  <settings layout="Hierarchic Group" zoom="0.7558258642765685" x="1016.4448585465018" y="683.0079620531933" />
+  <SelectedNodes>
+    <node>com.webcrawler.series.ImdbSeries</node>
+  </SelectedNodes>
   <Categories>
-    <Category>Properties</Category>
     <Category>Constructors</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

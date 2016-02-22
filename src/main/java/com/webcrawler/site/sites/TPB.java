@@ -45,7 +45,7 @@ public class TPB extends Site {
 
     public HashMap<String, String> getCookies(){
         try {
-            Connection.Response res = Jsoup.connect("https://pirateproxy.pw/switchview.php?view=s")
+            Connection.Response res = Jsoup.connect("https://ahoy.re/switchview.php?view=s")
                     .userAgent(WebConnection.HEADER_MOBILE)
                     .referrer(WebConnection.REFERRER_GOOGLE)
                     .data("view", "s")

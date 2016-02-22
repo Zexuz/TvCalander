@@ -1,6 +1,9 @@
 package com.webcrawler;
 
 import com.webcrawler.managers.Managers;
+import com.webcrawler.options.Options;
+
+import java.io.IOException;
 
 public class MainThread implements Runnable {
 
@@ -20,7 +23,19 @@ public class MainThread implements Runnable {
 
         running = false;
 
-        managers.tick();
+        //managers.tick();
+        Options options;
+        try {
+            options = new Options();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new NullPointerException("Can't read options file");
+        }
+
+
+        for (String tpbUrl : options.getThePirateBayUrlList("tpb")) {
+            System.out.println(tpbUrl);
+        }
 
         while (running) {
         }

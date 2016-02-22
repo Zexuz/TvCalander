@@ -8,18 +8,17 @@ import com.webcrawler.torrent.Torrent;
 import java.util.ArrayList;
 
 public class Managers {
-
+    // TODO: 2016-02-22
+    /*
+        change SiteManager to WebScraperManager?
+     */
     private SiteManager siteManager;
 
     private ImdbApi imdbApi;
 
-    private boolean hasUpdateListToday = false;
-
-
     public Managers() {
         siteManager = new SiteManager();
         imdbApi = new ImdbApi();
-
     }
 
 
@@ -46,8 +45,7 @@ public class Managers {
             Clean up code.
 
          */
-        if (!hasUpdateListToday) {
-            hasUpdateListToday = true;
+        if (shouldScrapeImdb()) {
             for (String s : siteManager.getImdbIds(0, 50)) {
 
                 ImdbSeries imdbSeriesTemp = SiteManager.createImdbSeries(s);
@@ -77,6 +75,11 @@ public class Managers {
         //4
 
 
+
+    }
+
+    private boolean shouldScrapeImdb() {
+        return false;
     }
 
     private ArrayList<Torrent> pairTorrentAndSeries(ArrayList<Torrent> torrents, ArrayList<ImdbSeries> imdbSeriesArrayList) {
@@ -85,10 +88,7 @@ public class Managers {
 
             for (Torrent torrent : torrents) {
 
-                if (!torrent.isSeries()) {
-                    continue;
-                }
-
+                if (!torrent.isSeries()) continue;
 
                 if (Common.isTorrentMatch(imdbSeries, torrent)) {
                     torrent.setMatch(imdbSeries.getTitle());

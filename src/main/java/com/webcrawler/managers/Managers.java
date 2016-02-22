@@ -1,11 +1,12 @@
 package com.webcrawler.managers;
 
-import com.webcrawler.MainThread;
 import com.webcrawler.connections.restapi.ImdbApi;
 import com.webcrawler.misc.Common;
+import com.webcrawler.options.Options;
 import com.webcrawler.series.ImdbSeries;
 import com.webcrawler.torrent.Torrent;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Managers {
@@ -14,15 +15,21 @@ public class Managers {
         change SiteManager to WebScraperManager?
      */
     private SiteManager siteManager;
-
     private ImdbApi imdbApi;
+    public Options options;
 
     public Managers() {
-        if (MainThread.getInstance() == null) {
-            System.out.println("it's null");
+        try {
+            options = new Options();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Can't read options.config file, exiting");
+            System.exit(9456);
         }
-        siteManager = new SiteManager();
-        imdbApi = new ImdbApi();
+
+        siteManager = new SiteManager(this);
+        imdbApi = new ImdbApi(this);
+
     }
 
 
@@ -52,7 +59,7 @@ public class Managers {
         if (shouldScrapeImdb()) {
             for (String s : siteManager.getImdbIds(0, 50)) {
 
-                ImdbSeries imdbSeriesTemp = SiteManager.createImdbSeries(s);
+                ImdbSeries imdbSeriesTemp = Managers.createSeries(s);
 
                 imdbSeriesTemp.load();
 
@@ -103,4 +110,9 @@ public class Managers {
         }
         return matchedTorrents;
     }
+
+    public static ImdbSeries createSeries(String id) {
+        return new ImdbSeries(id);
+    }
+
 }

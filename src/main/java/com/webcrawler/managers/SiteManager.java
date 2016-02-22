@@ -1,6 +1,5 @@
 package com.webcrawler.managers;
 
-import com.webcrawler.series.ImdbSeries;
 import com.webcrawler.site.sites.Imdb;
 import com.webcrawler.site.sites.Rss;
 import com.webcrawler.site.sites.TPB;
@@ -14,7 +13,11 @@ public class SiteManager {
     private Rss rss;
     private TPB thePirateBay;
 
-    public SiteManager() {
+    private Managers managers;
+
+    public SiteManager(Managers managers) {
+        this.managers = managers;
+
         rss = new Rss("https://www.torrentday.com");
         imdb = new Imdb("http://www.imdb.com");
         thePirateBay = new TPB("http://www.thepiratebay.se");
@@ -29,11 +32,6 @@ public class SiteManager {
         return imdb.getIds(start, end);
     }
 
-    public static ImdbSeries createImdbSeries(String id) {
-        return new ImdbSeries(id);
-    }
-
-
     public ArrayList<Torrent> getRecentTorrentPages(int pages) {
 
         ArrayList<Torrent> t = new ArrayList<>();
@@ -44,10 +42,6 @@ public class SiteManager {
         }
 
         return t;
-    }
-
-    public ArrayList<Torrent> getPage() {
-        return thePirateBay.getTorrentsForSite();
     }
 
 

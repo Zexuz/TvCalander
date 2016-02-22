@@ -1,35 +1,18 @@
 package com.webcrawler;
 
 import com.webcrawler.managers.Managers;
-import com.webcrawler.options.Options;
-
-import java.io.IOException;
 
 public class MainThread implements Runnable {
 
 
-    private static MainThread singleton = new MainThread();
+    private final static MainThread singleton = new MainThread();
     private boolean running = false;
     private boolean pause = false;
 
 
     public Managers managers;
-    public Options options;
 
     private MainThread() {
-        try {
-            options = new Options();
-            System.out.println(options.getHostAndPortForREST().toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Can't load options.config file");
-            System.exit(-99);
-        }
-
-        if(singleton == null){
-            System.out.println("This is also null");
-        }
-
         managers = new Managers();
         start();
     }

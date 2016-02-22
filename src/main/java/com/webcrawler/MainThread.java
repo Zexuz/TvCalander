@@ -9,48 +9,44 @@ public class MainThread implements Runnable {
 
 
     private static MainThread singleton = new MainThread();
-    private  Options options;
     private boolean running = false;
     private boolean pause = false;
 
+
     public Managers managers;
+    public Options options;
 
     private MainThread() {
+        try {
+            options = new Options();
+            System.out.println(options.getHostAndPortForREST().toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Can't load options.config file");
+            System.exit(-99);
+        }
+
+        if(singleton == null){
+            System.out.println("This is also null");
+        }
+
         managers = new Managers();
         start();
     }
 
-    // TODO: 2016-02-22  make a options manager
-
     @Override
     public void run() {
 
+
         running = false;
 
-        //managers.tick();
-
-        try {
-            options = new Options();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new NullPointerException("Can't read options file");
-        }
-
-
-        for (String tpbUrl : options.getThePirateBayUrlList("tpb")) {
-            System.out.println(tpbUrl);
-        }
+        managers.tick();
 
         while (running) {
         }
 
 
     }
-
-    public Object getOptionsProp(String prop){
-        return options.getOption(prop);
-    }
-
 
     public synchronized void stop() {
         running = false;
@@ -84,7 +80,6 @@ public class MainThread implements Runnable {
     }
 
     public static void main(String args[]) {
-        getInstance();
     }
 
 }

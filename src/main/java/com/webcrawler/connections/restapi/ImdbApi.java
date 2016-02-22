@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.webcrawler.MainThread;
+import com.webcrawler.options.Options;
 import com.webcrawler.series.ImdbSeries;
 
 import java.io.IOException;
@@ -11,8 +12,9 @@ import java.util.ArrayList;
 
 public class ImdbApi extends RestApi {
 
+
     public ImdbApi() {
-        super("http://" + MainThread.getInstance().getOptionsProp("host") + ":" + MainThread.getInstance().getOptionsProp("host") + "", "ImdbService", "v1");
+        super(MainThread.getInstance().options.getHostAndPortForREST().toString(), "ImdbService", "v1");
     }
 
     public ArrayList<ImdbSeries> getAllSeries() {

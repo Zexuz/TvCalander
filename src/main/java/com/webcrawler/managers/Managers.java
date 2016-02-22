@@ -1,5 +1,6 @@
 package com.webcrawler.managers;
 
+import com.webcrawler.MainThread;
 import com.webcrawler.connections.restapi.ImdbApi;
 import com.webcrawler.misc.Common;
 import com.webcrawler.series.ImdbSeries;
@@ -17,6 +18,9 @@ public class Managers {
     private ImdbApi imdbApi;
 
     public Managers() {
+        if (MainThread.getInstance() == null) {
+            System.out.println("it's null");
+        }
         siteManager = new SiteManager();
         imdbApi = new ImdbApi();
     }
@@ -73,7 +77,6 @@ public class Managers {
         System.out.println(Common.toJson(matchedTorrents));
 
         //4
-
 
 
     }

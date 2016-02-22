@@ -4,8 +4,6 @@ package com.webcrawler.options;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Properties;
 
 public class Options {

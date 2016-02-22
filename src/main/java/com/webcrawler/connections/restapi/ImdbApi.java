@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ImdbApi extends RestApi {
 
     public ImdbApi() {
-        super("http://localhost:7777", "ImdbService", "v1");
+        super("http://192.168.1.172:7777", "ImdbService", "v1");
     }
 
     public ArrayList<ImdbSeries> getAllSeries() {

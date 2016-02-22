@@ -1,6 +1,5 @@
 package com.webcrawler.connections.restapi;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,8 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public abstract class RestApi {
-
-    private static final String baseUrl = "http://192.168.1.200:8000";
 
     private String url;
     private String version;

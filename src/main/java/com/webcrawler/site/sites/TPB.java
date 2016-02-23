@@ -12,7 +12,9 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class TPB extends Site {
 
@@ -22,19 +24,19 @@ public class TPB extends Site {
     }
 
     public void next() {
-        int lastDash = getPath().lastIndexOf('/') +1;
-        String path = getPath().substring(0, lastDash );
+        int lastDash = getPath().lastIndexOf('/') + 1;
+        String path = getPath().substring(0, lastDash);
 
-        int currentIndex = Integer.parseInt(getPath().substring(lastDash ));
+        int currentIndex = Integer.parseInt(getPath().substring(lastDash));
 
         setPath(path + ++currentIndex);
     }
 
     public void prev() {
-        int lastDash = getPath().lastIndexOf('/') +1;
-        String path = getPath().substring(0, lastDash );
+        int lastDash = getPath().lastIndexOf('/') + 1;
+        String path = getPath().substring(0, lastDash);
 
-        int currentIndex = Integer.parseInt(getPath().substring(lastDash ));
+        int currentIndex = Integer.parseInt(getPath().substring(lastDash));
 
         setPath(path + --currentIndex);
     }
@@ -43,7 +45,7 @@ public class TPB extends Site {
         return webConn;
     }
 
-    public HashMap<String, String> getCookies(){
+    public HashMap<String, String> getCookies() {
         try {
             Connection.Response res = Jsoup.connect("https://ahoy.re/switchview.php?view=s")
                     .userAgent(WebConnection.HEADER_MOBILE)
@@ -66,27 +68,47 @@ public class TPB extends Site {
         System.out.println(getPath());
         Document doc = getWebConn().getDocument(getPath());
 
-        try{
+        try {
             Element mainInfo = doc.getElementById("searchResult").getElementsByTag("tbody").first();
             Elements torrentElements = mainInfo.getElementsByTag("tr");
 
             ArrayList<Torrent> torrents = new ArrayList<>();
 
-
-            for (int i = 0; i < torrentElements.size()-1; i++) {
-                Element e = torrentElements.get(i);
-                Elements torrentInfo = e.getElementsByTag("td");
-
-                torrents.add(TorrentManager.createTorrent(torrentInfo.get(1).text()));
+            for (int i = 0; i < torrentElements.size() - 1; i++) {
+                torrents.add(getTorrentFromElement(torrentElements.get(i)));
             }
 
             return torrents;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-      return null;
+        return null;
+    }
 
+    private Torrent getTorrentFromElement(Element element) {
+        Elements torrentInfo = element.getElementsByTag("td");
+
+        String title = torrentInfo.get(1).text();
+        String siteLink = torrentInfo.get(1).children().attr("href");
+        String torrentLink = "";
+        String upLoader = torrentInfo.get(7).text();
+        String upLoaderStatus = "Regular";
+
+        Element linkAndUser = torrentInfo.get(3);
+
+        for (Element e : linkAndUser.getElementsByTag("a")) {
+            if (e.attr("title").equals("Download this torrent using magnet")) {
+                torrentLink = e.attr("href");
+                continue;
+            }
+
+            if(e.attr("href").contains("/user/")){
+                upLoaderStatus = e.children().first().attr("title");
+            }
+        }
+
+        return TorrentManager.createTorrent(title, new Date(), siteLink, torrentLink, upLoader, upLoaderStatus);
     }
 
 }

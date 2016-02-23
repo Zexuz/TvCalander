@@ -101,7 +101,6 @@ public class Managers {
                 if (!torrent.isSeries()) continue;
 
                 if (Common.isTorrentMatch(imdbSeries, torrent)) {
-                    torrent.setMatch(imdbSeries.getTitle());
                     matchedTorrents.add(torrent);
                 }
 

@@ -82,11 +82,7 @@ public class Torrent {
         Matcher matcher = pattern.matcher(title.toLowerCase());
 
         if (matcher.matches()) {
-
-            String season = matcher.toMatchResult().group(1);
-
-
-            return season;
+            return matcher.toMatchResult().group(1);
         }
 
         return null;

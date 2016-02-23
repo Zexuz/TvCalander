@@ -15,6 +15,7 @@ public class ImdbApi extends RestApi {
     public ImdbApi(Managers managers) {
         super(managers.options.getHostAndPortForREST(), "ImdbService", "v1");
             System.out.println(managers.options.getHostAndPortForREST());
+        System.out.println("test");
     }
 
     public ArrayList<ImdbSeries> getAllSeries() {

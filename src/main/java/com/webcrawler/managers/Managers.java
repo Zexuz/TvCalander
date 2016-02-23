@@ -27,6 +27,7 @@ public class Managers {
             System.exit(9456);
         }
 
+        System.out.println("also test")
         siteManager = new SiteManager(this);
         imdbApi = new ImdbApi(this);
 

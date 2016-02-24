@@ -11,10 +11,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class TPB extends Site {
 
@@ -94,8 +93,21 @@ public class TPB extends Site {
         String torrentLink = "";
         String upLoader = torrentInfo.get(7).text();
         String upLoaderStatus = "Regular";
+        String pubDateString = torrentInfo.get(2).text();
 
         Element linkAndUser = torrentInfo.get(3);
+
+
+        System.out.println("date :" + pubDateString);
+        ThepiratebayDecoder thepiratebayDecoder = new ThepiratebayDecoder(pubDateString);
+
+        Date pubDate = null;
+
+        try {
+            pubDate = thepiratebayDecoder.getDate();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         for (Element e : linkAndUser.getElementsByTag("a")) {
             if (e.attr("title").equals("Download this torrent using magnet")) {
@@ -103,12 +115,73 @@ public class TPB extends Site {
                 continue;
             }
 
-            if(e.attr("href").contains("/user/")){
+            if (e.attr("href").contains("/user/")) {
                 upLoaderStatus = e.children().first().attr("title");
             }
         }
 
-        return TorrentManager.createTorrent(title, new Date(), siteLink, torrentLink, upLoader, upLoaderStatus);
+        return TorrentManager.createTorrent(title, pubDate, siteLink, torrentLink, upLoader, upLoaderStatus);
     }
+
+}
+
+class ThepiratebayDecoder {
+
+    private String dateString;
+    private Calendar calendar;
+
+    public ThepiratebayDecoder(String dateString) {
+        this.dateString = dateString.trim();
+        calendar = new GregorianCalendar();
+
+        if (!controlInput()) {
+            getDay();
+            getHour();
+            getMin();
+        }
+    }
+
+    private boolean controlInput() {
+        this.dateString = this.dateString.replace('\u00a0' , ' ').trim();
+
+        if (this.dateString.contains("mins")) {
+            this.dateString = this.dateString.replace("mins", "").trim();
+            this.dateString = this.dateString.replace("ago", "").trim();
+
+            long time = calendar.getTime().getTime() - (Integer.parseInt(this.dateString) * 60);
+
+            calendar.setTime(new Date(time));
+
+            return true;
+        }
+        return false;
+    }
+
+    public Date getDate() throws ParseException {
+        return calendar.getTime();
+    }
+
+    private void getDay() {
+        if (dateString.contains("Y-day")) {
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) - 1);
+            return;
+        }
+
+        if (dateString.contains("Today")) {
+            return;
+        }
+
+        String day = dateString.substring(dateString.indexOf('-') + 1, dateString.indexOf(" "));
+        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day));
+    }
+
+    private int getMin() {
+        return Integer.parseInt(dateString.substring(dateString.indexOf(':') + 1));
+    }
+
+    private int getHour() {
+        return Integer.parseInt(dateString.substring(dateString.indexOf(" ") + 1, dateString.indexOf(':')));
+    }
+
 
 }

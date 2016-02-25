@@ -12,7 +12,6 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TPB extends Site {
@@ -97,8 +96,6 @@ public class TPB extends Site {
 
         Element linkAndUser = torrentInfo.get(3);
 
-
-        System.out.println("date :" + pubDateString);
         ThepiratebayDecoder thepiratebayDecoder = new ThepiratebayDecoder(pubDateString);
 
         Date pubDate = null;

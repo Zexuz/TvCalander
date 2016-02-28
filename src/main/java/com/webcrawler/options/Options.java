@@ -25,7 +25,7 @@ public class Options {
     }
 
     public String getHostAndPortForREST() {
-        return "http://" + getOption("host").toString() + ":" + getOption("port").toString();
+        return "http://" + getOption("host").toString() + ":" + getOption("port").toString() + "/api";
     }
 
 }

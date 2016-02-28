@@ -74,6 +74,7 @@ public class Managers {
 
         //1
         imdbSeries = imdbApi.getAllSeries();
+        System.out.println(imdbSeries.size());
         //2
         torrents = siteManager.getRecentTorrentPages(5);
 

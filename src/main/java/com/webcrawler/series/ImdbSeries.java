@@ -18,13 +18,15 @@ public class ImdbSeries extends Site {
 
     private String id;
     private String title = null;
+    private String year;
+    private String imgLink = null;
 
-    public ImdbSeries(String id){
+    public ImdbSeries(String id) {
         super(url);
         this.id = id;
 
 
-        setPath("/title/tt"+id);
+        setPath("/title/tt" + id);
     }
 
 
@@ -48,10 +50,26 @@ public class ImdbSeries extends Site {
             if (!matcher.matches())
                 continue;
 
+            setYear(matcher.group(0).substring(1, 5));
             setTitle(element.text().substring(0, element.text().length() - matcher.group(0).length()).trim());
             return true;
         }
         return false;
+    }
+
+    public String getImgLink() {
+        if (imgLink != null)
+            return imgLink;
+
+        Elements images = doc.getElementsByTag("img");
+
+        for (Element image : images) {
+            if (image.attr("alt").contains(title) && image.attr("alt").contains(year) && image.attr("alt").contains("Poster"))
+                return image.attr("src");
+        }
+
+        System.out.println("No image poster found");
+        return null;
     }
 
     private boolean hasSeason() {
@@ -75,4 +93,11 @@ public class ImdbSeries extends Site {
         this.title = title;
     }
 
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
 }

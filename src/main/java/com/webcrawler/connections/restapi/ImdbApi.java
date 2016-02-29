@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.webcrawler.managers.Managers;
+import com.webcrawler.misc.Common;
 import com.webcrawler.series.ImdbSeries;
 
 import java.io.IOException;
@@ -14,7 +15,6 @@ public class ImdbApi extends RestApi {
 
     public ImdbApi(Managers managers) {
         super(managers.options.getHostAndPortForREST(), "ImdbService", "v1");
-        System.out.println(managers.options.getHostAndPortForREST());
     }
 
     public ArrayList<ImdbSeries> getAllSeries() {
@@ -70,7 +70,6 @@ public class ImdbApi extends RestApi {
         return series;
     }
 
-
     private ArrayList<ImdbSeries> stringToSeries(String response) {
         ArrayList<ImdbSeries> series = new ArrayList<>();
 
@@ -94,7 +93,9 @@ public class ImdbApi extends RestApi {
                 "\"id\":\"" + series.getId() + "\"," +
                 "\"imgLink\":\"" + series.getImgLink() + "\"," +
                 "\"year\":\"" + series.getYear() + "\"" +
+                //",\"seasons\":\"" + Common.toJson(series.getSeasons()) + "\"" +
                 "}";
+
         return res;
     }
 

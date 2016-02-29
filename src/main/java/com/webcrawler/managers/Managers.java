@@ -80,17 +80,18 @@ public class Managers {
 
 
                 //check if we should update a series eg, imdb has new data
-                for (ImdbSeries apiSeries : imdbSeriesArrayList) {
-                    if (apiSeries.getId().equals(imdbSeries.getId())) {
+                for (ImdbSeries apiSeriesShortInfo : imdbSeriesArrayList) {
+                    if (apiSeriesShortInfo.getId().equals(imdbSeries.getId())) {
                         //check if our old seasons data is correct.
 
-                        if(!apiSeries.getImgLink().equals(imdbSeries.getImgLink())){
+                        ImdbSeries apiSeriesFullInfo = imdbApi.getOneSeries(apiSeriesShortInfo.getId());
+                        if(!apiSeriesFullInfo.getImgLink().equals(imdbSeries.getImgLink())){
                             imdbApi.updateSeries(imdbSeries);
                             break;
                         }
 
                         //not the same title (yes I know, what's the odds...)
-                        if (!apiSeries.getTitle().equals(imdbSeries.getTitle())) {
+                        if (!apiSeriesFullInfo.getTitle().equals(imdbSeries.getTitle())) {
                             imdbApi.updateSeries(imdbSeries);
                             break;
                         }

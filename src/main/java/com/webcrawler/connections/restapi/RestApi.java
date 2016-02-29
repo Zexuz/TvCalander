@@ -30,9 +30,6 @@ public abstract class RestApi {
         String inputLine;
         StringBuilder response = new StringBuilder();
 
-
-        System.out.println("test");
-
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }

@@ -32,16 +32,16 @@ public class ImdbApi extends RestApi {
 
     public ImdbSeries addSeries(ImdbSeries series) {
         try {
-            return stringToSeries(sendPost("Series",imdbSeriesToUrlString(series))).get(0);
+            return stringToOneSeries(sendPost("Series", imdbSeriesToUrlString(series)));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public ImdbSeries getSeries(String seriesId) {
+    public ImdbSeries getOneSeries(String seriesId) {
         try {
-            return stringToSeries(sendGet("Series/" + seriesId)).get(0);
+            return stringToOneSeries(sendGet("Series/" + seriesId));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -49,14 +49,27 @@ public class ImdbApi extends RestApi {
 
     }
 
-    public ImdbSeries updateSeries(ImdbSeries series){
+    public ImdbSeries updateSeries(ImdbSeries series) {
         try {
-           return stringToSeries(sendPut("Series",imdbSeriesToUrlString(series))).get(0);
+            return stringToOneSeries(sendPut("Series", imdbSeriesToUrlString(series)));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    private ImdbSeries stringToOneSeries(String response) {
+        JsonParser parser = new JsonParser();
+        JsonElement jsonElement = parser.parse(response);
+
+        ImdbSeries series = Managers.createSeries(jsonElement.getAsJsonObject().get("id").getAsString());
+        series.setTitle(jsonElement.getAsJsonObject().get("title").getAsString());
+        series.setYear(jsonElement.getAsJsonObject().get("year").getAsString());
+        series.setImgLink(jsonElement.getAsJsonObject().get("imgLink").getAsString());
+
+        return series;
+    }
+
 
     private ArrayList<ImdbSeries> stringToSeries(String response) {
         ArrayList<ImdbSeries> series = new ArrayList<>();

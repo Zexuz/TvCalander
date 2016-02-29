@@ -84,6 +84,7 @@ public class Managers {
                     if (apiSeriesShortInfo.getId().equals(imdbSeries.getId())) {
                         //check if our old seasons data is correct.
 
+                        //not the same image
                         ImdbSeries apiSeriesFullInfo = imdbApi.getOneSeries(apiSeriesShortInfo.getId());
                         if(!apiSeriesFullInfo.getImgLink().equals(imdbSeries.getImgLink())){
                             imdbApi.updateSeries(imdbSeries);

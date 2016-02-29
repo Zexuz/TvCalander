@@ -35,30 +35,13 @@ public class Managers {
 
 
     public void tick() {
-        // TODO: 2016-02-15
-
         //1 get active shows from imdb once every day and post it to the database
         //2 search thePirateBay and other sites after those torrents
         //3 compare ids and torrents.
         //4 if it's a show we are looking for, add the torrent to the database.
 
-        ArrayList<ImdbSeries> imdbSeriesArrayList;
-        ArrayList<Torrent> torrents, matchedTorrents;
-
-
-        // TODO: 2016-02-21 this is some bad code!!!
-        /*
-            We should only add series that is not already in the database
-         */
-
-        // TODO: 2016-02-21
-        /*
-            Clean up project
-            Clean up code.
-
-         */
-
-        imdbSeriesArrayList = imdbApi.getAllSeries();
+        //1
+        ArrayList<ImdbSeries> imdbSeriesArrayList = imdbApi.getAllSeries();
 
         if (shouldScrapeImdb()) {
             for (String imdbId : siteManager.getImdbIds(0, 50)) {
@@ -102,13 +85,10 @@ public class Managers {
         }
 
 
-        //1
-        //imdbSeries = imdbApi.getAllSeries();
         //2
-        torrents = siteManager.getRecentTorrentPages(5);
-
+        ArrayList<Torrent> torrents = siteManager.getRecentTorrentPages(5);
         //3
-        matchedTorrents = pairTorrentAndSeries(torrents, imdbSeriesArrayList);
+        ArrayList<Torrent> matchedTorrents = pairTorrentAndSeries(torrents, imdbSeriesArrayList);
 
         System.out.println(String.format("the list was %d, found %d torrents, matches %d ", imdbSeriesArrayList.size(), torrents.size(), matchedTorrents.size()));
         System.out.println(Common.toJson(matchedTorrents));

@@ -11,15 +11,13 @@ public class ImdbSeries extends Site {
 
     private static final String url = "http://m.imdb.com";
 
-    // TODO: 2016-02-16
-    /*
-    fix this disgusting class
-     */
 
     private String id;
     private String title = null;
-    private String year;
+    private String year = null;
     private String imgLink = null;
+
+    private boolean hasValidHeaders;
 
     public ImdbSeries(String id) {
         super(url);
@@ -29,9 +27,18 @@ public class ImdbSeries extends Site {
         setPath("/title/tt" + id);
     }
 
+    @Override
+    public void load() {
+        super.load();
+
+        hasValidHeaders = hasValidHeader();
+        if(!hasValidHeaders)
+            return;
+        setImgLink(scrapeImg());
+    }
 
     public boolean isPageValid() {
-        return hasValidHeader();
+        return hasValidHeaders;
     }
 
     private boolean hasValidHeader() {
@@ -57,10 +64,7 @@ public class ImdbSeries extends Site {
         return false;
     }
 
-    public String getImgLink() {
-        if (imgLink != null)
-            return imgLink;
-
+    private String scrapeImg() {
         Elements images = doc.getElementsByTag("img");
 
         for (Element image : images) {
@@ -68,7 +72,6 @@ public class ImdbSeries extends Site {
                 return image.attr("src");
         }
 
-        System.out.println("No image poster found");
         return null;
     }
 
@@ -81,27 +84,33 @@ public class ImdbSeries extends Site {
         return false;
     }
 
+    //==========================================
+
     public String getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getYear() {
-        return year;
+    public String getTitle() {
+        return title;
     }
 
     public void setYear(String year) {
         this.year = year;
     }
 
+    public String getYear() {
+        return year;
+    }
+
     public void setImgLink(String imgLink) {
         this.imgLink = imgLink;
+    }
+
+    public String getImgLink() {
+        return imgLink;
     }
 }

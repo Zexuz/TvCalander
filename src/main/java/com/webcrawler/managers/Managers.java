@@ -8,6 +8,7 @@ import com.webcrawler.torrent.Torrent;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Managers {
     // TODO: 2016-02-22
@@ -56,6 +57,9 @@ public class Managers {
             Clean up code.
 
          */
+
+        imdbSeries = imdbApi.getAllSeries();
+
         if (shouldScrapeImdb()) {
             for (String s : siteManager.getImdbIds(0, 50)) {
 
@@ -67,13 +71,43 @@ public class Managers {
                     System.out.println("not valid");
                     continue;
                 }
-                imdbApi.addSeries(imdbSeriesTemp);
+
+                //check if the ArrayList imdbSeries contains the current series
+                boolean contains = false;
+                for (ImdbSeries imdbSery : imdbSeries) {
+                    if(imdbSery.getId().equals(imdbSeriesTemp.getId())) contains =true;
+                }
+
+                //if it does not contains the series, add it and run next
+                if(!contains) {
+                    imdbApi.addSeries(imdbSeriesTemp);
+                    continue;
+                }
+
+
+                //check if we should update a series
+                for (ImdbSeries apiSeries : imdbSeries) {
+
+                    if (apiSeries.getId().equals(imdbSeriesTemp.getId())) {
+
+
+                        //check if our old seasons data is correct.
+
+                        //todo decide what class we will use for storing Series..
+
+                        //not the same title (yes I know, what's the odds...)
+                        if (!apiSeries.getTitle().equals(imdbSeriesTemp.getTitle())) {
+                            imdbApi.addSeries(imdbSeriesTemp);
+                            break;
+                        }
+                    }
+                }
             }
         }
 
 
         //1
-        imdbSeries = imdbApi.getAllSeries();
+        //imdbSeries = imdbApi.getAllSeries();
         //2
         torrents = siteManager.getRecentTorrentPages(5);
 
@@ -89,7 +123,7 @@ public class Managers {
     }
 
     private boolean shouldScrapeImdb() {
-        return false;
+        return true;
     }
 
     private ArrayList<Torrent> pairTorrentAndSeries(ArrayList<Torrent> torrents, ArrayList<ImdbSeries> imdbSeriesArrayList) {

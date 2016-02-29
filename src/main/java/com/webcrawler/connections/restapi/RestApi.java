@@ -1,9 +1,6 @@
 package com.webcrawler.connections.restapi;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -65,8 +62,16 @@ public abstract class RestApi {
         System.out.println("Post parameters : " + urlParameters);
         System.out.println("Response Code : " + responseCode);
 
+
+        InputStream inputStream;
+        if(responseCode != 200){
+            inputStream =con.getErrorStream();
+        }else{
+            inputStream = con.getInputStream();
+        }
+
         BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
+                new InputStreamReader(inputStream));
         String inputLine;
         StringBuilder response = new StringBuilder();
 

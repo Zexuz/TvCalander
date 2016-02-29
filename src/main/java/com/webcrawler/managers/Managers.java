@@ -42,7 +42,7 @@ public class Managers {
         //3 compare ids and torrents.
         //4 if it's a show we are looking for, add the torrent to the database.
 
-        ArrayList<ImdbSeries> imdbSeries;
+        ArrayList<ImdbSeries> imdbSeriesArrayList;
         ArrayList<Torrent> torrents, matchedTorrents;
 
 
@@ -58,46 +58,40 @@ public class Managers {
 
          */
 
-        imdbSeries = imdbApi.getAllSeries();
+        imdbSeriesArrayList = imdbApi.getAllSeries();
 
         if (shouldScrapeImdb()) {
-            for (String s : siteManager.getImdbIds(0, 50)) {
+            for (String imdbId : siteManager.getImdbIds(0, 50)) {
+                //s is
+                ImdbSeries imdbSeries = Managers.createSeries(imdbId);
+                imdbSeries.load();
 
-                ImdbSeries imdbSeriesTemp = Managers.createSeries(s);
-
-                imdbSeriesTemp.load();
-
-                if (!imdbSeriesTemp.isPageValid()) {
-                    System.out.println("not valid");
+                if (!imdbSeries.isPageValid()) {
+                    System.out.println(imdbSeries.getId() + " is not valid");
                     continue;
                 }
 
-                //check if the ArrayList imdbSeries contains the current series
-                boolean contains = false;
-                for (ImdbSeries imdbSery : imdbSeries) {
-                    if(imdbSery.getId().equals(imdbSeriesTemp.getId())) contains =true;
-                }
-
-                //if it does not contains the series, add it and run next
-                if(!contains) {
-                    imdbApi.addSeries(imdbSeriesTemp);
+                //check if the ArrayList imdbSeriesArrayList contains the current series
+                if (!doesContain(imdbSeriesArrayList, imdbSeries)) {
+                    //if it does not contain we just update it to the api and continues with the loop
+                    imdbApi.addSeries(imdbSeries);
                     continue;
                 }
 
 
-                //check if we should update a series
-                for (ImdbSeries apiSeries : imdbSeries) {
-
-                    if (apiSeries.getId().equals(imdbSeriesTemp.getId())) {
-
-
+                //check if we should update a series eg, imdb has new data
+                for (ImdbSeries apiSeries : imdbSeriesArrayList) {
+                    if (apiSeries.getId().equals(imdbSeries.getId())) {
                         //check if our old seasons data is correct.
 
-                        //todo decide what class we will use for storing Series..
+                        if(!apiSeries.getImgLink().equals(imdbSeries.getImgLink())){
+                            imdbApi.updateSeries(imdbSeries);
+                            break;
+                        }
 
                         //not the same title (yes I know, what's the odds...)
-                        if (!apiSeries.getTitle().equals(imdbSeriesTemp.getTitle())) {
-                            imdbApi.addSeries(imdbSeriesTemp);
+                        if (!apiSeries.getTitle().equals(imdbSeries.getTitle())) {
+                            imdbApi.updateSeries(imdbSeries);
                             break;
                         }
                     }
@@ -112,14 +106,23 @@ public class Managers {
         torrents = siteManager.getRecentTorrentPages(5);
 
         //3
-        matchedTorrents = pairTorrentAndSeries(torrents, imdbSeries);
+        matchedTorrents = pairTorrentAndSeries(torrents, imdbSeriesArrayList);
 
-        System.out.println(String.format("the list was %d, found %d torrents, matches %d ", imdbSeries.size(), torrents.size(), matchedTorrents.size()));
+        System.out.println(String.format("the list was %d, found %d torrents, matches %d ", imdbSeriesArrayList.size(), torrents.size(), matchedTorrents.size()));
         System.out.println(Common.toJson(matchedTorrents));
 
         //4
 
 
+    }
+
+    private boolean doesContain(ArrayList<ImdbSeries> imdbSeriesArrayList, ImdbSeries imdbSeries) {
+        boolean contains = false;
+        for (ImdbSeries imdbSery : imdbSeriesArrayList) {
+            if (imdbSery.getId().equals(imdbSeries.getId())) contains = true;
+        }
+
+        return contains;
     }
 
     private boolean shouldScrapeImdb() {

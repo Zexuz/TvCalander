@@ -100,4 +100,8 @@ public class ImdbSeries extends Site {
     public void setYear(String year) {
         this.year = year;
     }
+
+    public void setImgLink(String imgLink) {
+        this.imgLink = imgLink;
+    }
 }

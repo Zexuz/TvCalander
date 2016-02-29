@@ -14,7 +14,7 @@ public class ImdbApi extends RestApi {
 
     public ImdbApi(Managers managers) {
         super(managers.options.getHostAndPortForREST(), "ImdbService", "v1");
-            System.out.println(managers.options.getHostAndPortForREST());
+        System.out.println(managers.options.getHostAndPortForREST());
     }
 
     public ArrayList<ImdbSeries> getAllSeries() {
@@ -41,6 +41,16 @@ public class ImdbApi extends RestApi {
         return false;
     }
 
+    public ImdbSeries getSeries(String seriesId) {
+        try {
+            return stringToSeries(sendGet("Series/" + seriesId)).get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 
     private ArrayList<ImdbSeries> stringToSeries(String response) {
         ArrayList<ImdbSeries> series = new ArrayList<>();
@@ -60,7 +70,7 @@ public class ImdbApi extends RestApi {
 
     private String imdbSeriesToUrlString(ImdbSeries series) {
         String response;
-        response = "title=" + series.getTitle() + "&id=" + series.getId() + "&imgLink="+series.getImgLink() + "&year="+series.getYear();
+        response = "title=" + series.getTitle() + "&id=" + series.getId() + "&imgLink=" + series.getImgLink() + "&year=" + series.getYear();
         return response;
     }
 

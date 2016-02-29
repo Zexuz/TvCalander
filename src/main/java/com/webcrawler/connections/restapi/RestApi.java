@@ -22,7 +22,7 @@ public abstract class RestApi {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("\nSending 'GET' request to URL : " + getWholeUrl(method) );
         System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
@@ -47,8 +47,6 @@ public abstract class RestApi {
         return sendRequest(path,urlParameters,"PUT");
     }
 
-
-
     private String sendRequest(String path,String urlParameters,String method) throws Exception {
 
         URL obj = new URL(getWholeUrl(path));
@@ -59,13 +57,14 @@ public abstract class RestApi {
 
         // Send post request
         con.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(urlParameters);
-        wr.flush();
-        wr.close();
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream(), "UTF-8");
+        writer.write(urlParameters);
+        writer.close();
 
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending '"+method+"' request to URL : " + url);
+        System.out.println("\nSending '"+method+"' request to URL : " + getWholeUrl(path));
         System.out.println("Post parameters : " + urlParameters);
         System.out.println("Response Code : " + responseCode);
 

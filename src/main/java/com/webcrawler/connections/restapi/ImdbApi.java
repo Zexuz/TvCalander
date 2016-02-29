@@ -32,7 +32,7 @@ public class ImdbApi extends RestApi {
 
     public ImdbSeries addSeries(ImdbSeries series) {
         try {
-            return stringToOneSeries(sendPost("Series", imdbSeriesToUrlString(series)));
+            return stringToOneSeries(sendPost("Series", imdbSeriesToJsonString(series)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class ImdbApi extends RestApi {
 
     public ImdbSeries updateSeries(ImdbSeries series) {
         try {
-            return stringToOneSeries(sendPut("Series", imdbSeriesToUrlString(series)));
+            return stringToOneSeries(sendPut("Series", imdbSeriesToJsonString(series)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,10 +87,15 @@ public class ImdbApi extends RestApi {
         return series;
     }
 
-    private String imdbSeriesToUrlString(ImdbSeries series) {
-        String response;
-        response = "title=" + series.getTitle() + "&id=" + series.getId() + "&imgLink=" + series.getImgLink() + "&year=" + series.getYear();
-        return response;
+    private String imdbSeriesToJsonString(ImdbSeries series) {
+        String res;
+        res = "{" +
+                "\"title\":\"" + series.getTitle() + "\"," +
+                "\"id\":\"" + series.getId() + "\"," +
+                "\"imgLink\":\"" + series.getImgLink() + "\"," +
+                "\"year\":\"" + series.getYear() + "\"" +
+                "}";
+        return res;
     }
 
 

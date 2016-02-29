@@ -60,7 +60,7 @@ public class ImdbApi extends RestApi {
 
     private String imdbSeriesToUrlString(ImdbSeries series) {
         String response;
-        response = "title=" + series.getTitle() + "&id=" + series.getId();
+        response = "title=" + series.getTitle() + "&id=" + series.getId() + "&imgLink="+series.getImgLink() + "&year="+series.getYear();
         return response;
     }
 

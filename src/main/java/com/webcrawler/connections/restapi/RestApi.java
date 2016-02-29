@@ -42,13 +42,23 @@ public abstract class RestApi {
 
     }
 
-    protected void sendPost(String method,String urlParameters) throws Exception {
+    protected String sendPost(String path,String urlParameters) throws Exception {
+        return sendRequest(path,urlParameters,"POST");
+    }
 
-        URL obj = new URL(getWholeUrl(method));
+    protected String sendPut(String path,String urlParameters) throws Exception {
+        return sendRequest(path,urlParameters,"PUT");
+    }
+
+
+
+    private String sendRequest(String path,String urlParameters,String method) throws Exception {
+
+        URL obj = new URL(getWholeUrl(path));
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         //add reuqest header
-        con.setRequestMethod("POST");
+        con.setRequestMethod(method);
 
         // Send post request
         con.setDoOutput(true);
@@ -58,7 +68,7 @@ public abstract class RestApi {
         wr.close();
 
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'POST' request to URL : " + url);
+        System.out.println("\nSending '"+method+"' request to URL : " + url);
         System.out.println("Post parameters : " + urlParameters);
         System.out.println("Response Code : " + responseCode);
 
@@ -81,8 +91,7 @@ public abstract class RestApi {
         in.close();
 
         //print result
-        System.out.println(response.toString());
-
+        return response.toString();
     }
 
     protected String getWholeUrl(String method) {

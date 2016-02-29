@@ -14,7 +14,7 @@ public class ImdbApi extends RestApi {
 
     public ImdbApi(Managers managers) {
         super(managers.options.getHostAndPortForREST(), "ImdbService", "v1");
-            System.out.println(managers.options.getHostAndPortForREST());
+        System.out.println(managers.options.getHostAndPortForREST());
     }
 
     public ArrayList<ImdbSeries> getAllSeries() {
@@ -30,17 +30,33 @@ public class ImdbApi extends RestApi {
         return stringToSeries(data);
     }
 
-    public boolean addSeries(ImdbSeries series) {
-
+    public ImdbSeries addSeries(ImdbSeries series) {
         try {
-            sendPost("Series", imdbSeriesToUrlString(series));
+            return stringToSeries(sendPost("Series",imdbSeriesToUrlString(series))).get(0);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return false;
+        return null;
     }
 
+    public ImdbSeries getSeries(String seriesId) {
+        try {
+            return stringToSeries(sendGet("Series/" + seriesId)).get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public ImdbSeries updateSeries(ImdbSeries series){
+        try {
+           return stringToSeries(sendPut("Series",imdbSeriesToUrlString(series))).get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     private ArrayList<ImdbSeries> stringToSeries(String response) {
         ArrayList<ImdbSeries> series = new ArrayList<>();
@@ -60,7 +76,7 @@ public class ImdbApi extends RestApi {
 
     private String imdbSeriesToUrlString(ImdbSeries series) {
         String response;
-        response = "title=" + series.getTitle() + "&id=" + series.getId();
+        response = "title=" + series.getTitle() + "&id=" + series.getId() + "&imgLink=" + series.getImgLink() + "&year=" + series.getYear();
         return response;
     }
 

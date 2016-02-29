@@ -141,8 +141,9 @@ class ThepiratebayDecoder {
     private boolean controlInput() {
         this.dateString = this.dateString.replace('\u00a0' , ' ').trim();
 
-        if (this.dateString.contains("mins")) {
+        if (this.dateString.contains("mins") || this.dateString.contains("min")) {
             this.dateString = this.dateString.replace("mins", "").trim();
+            this.dateString = this.dateString.replace("min", "").trim();
             this.dateString = this.dateString.replace("ago", "").trim();
 
             long time = calendar.getTime().getTime() - (Integer.parseInt(this.dateString) * 60);

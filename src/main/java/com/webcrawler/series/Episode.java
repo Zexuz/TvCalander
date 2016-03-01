@@ -19,5 +19,9 @@ public class Episode {
         return number;
     }
 
+    public static Episode createEpisode(String airDate, int number){
+        return new Episode(airDate,number);
+    }
+
 
 }

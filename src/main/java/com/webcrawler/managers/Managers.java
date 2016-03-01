@@ -5,6 +5,7 @@ import com.webcrawler.misc.Common;
 import com.webcrawler.options.Options;
 import com.webcrawler.series.ImdbSeries;
 import com.webcrawler.series.Series;
+import com.webcrawler.site.imdb.Imdb;
 import com.webcrawler.torrent.Torrent;
 
 import java.io.IOException;
@@ -40,17 +41,12 @@ public class Managers {
         //3 compare ids and torrents.
         //4 if it's a show we are looking for, add the torrent to the database.
 
-        // TODO: 2016-03-01
-        /*
-            Change from ImdbSeries to just series
-         */
-        //1
         ArrayList<Series> seriesArrayList = imdbApi.getAllSeries();
 
         if (shouldScrapeImdb()) {
             for (String imdbId : siteManager.getImdbIds(0, 50)) {
                 //s is
-                ImdbSeries imdbSeries = Managers.createSeries(imdbId);
+                ImdbSeries imdbSeries = Imdb.createImdbSeries(imdbId);
                 imdbSeries.load();
 
                 if (!imdbSeries.isPageValid()) {
@@ -129,8 +125,5 @@ public class Managers {
         return matchedTorrents;
     }
 
-    public static ImdbSeries createSeries(String id) {
-        return new ImdbSeries(id);
-    }
 
 }

@@ -1,5 +1,6 @@
 package com.webcrawler.site.imdb;
 
+import com.webcrawler.series.ImdbSeries;
 import com.webcrawler.site.Site;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -49,6 +50,10 @@ public class Imdb extends Site {
 
 
         return ids;
+    }
+
+    public static ImdbSeries createImdbSeries(String id){
+        return new ImdbSeries(id);
     }
 
 

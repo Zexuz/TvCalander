@@ -1,7 +1,6 @@
 package com.webcrawler.connections.restapi;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import com.webcrawler.managers.Managers;
 import com.webcrawler.misc.Common;
 import com.webcrawler.series.Episode;
@@ -9,7 +8,6 @@ import com.webcrawler.series.Season;
 import com.webcrawler.series.Series;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class ImdbApi extends RestApi {
@@ -64,7 +62,7 @@ public class ImdbApi extends RestApi {
         JsonParser parser = new JsonParser();
         JsonElement jsonElement = parser.parse(response);
 
-        Series series = new Series();
+        Series series = Series.createSeries();
         series.setImdbId(jsonElement.getAsJsonObject().get("id").getAsString());
         series.setTitle(jsonElement.getAsJsonObject().get("title").getAsString());
         series.setStartYear(jsonElement.getAsJsonObject().get("year").getAsString());
@@ -73,11 +71,11 @@ public class ImdbApi extends RestApi {
         //series.setSeasons(new Gson().fromJson(jsonElement.getAsJsonObject().get("seasons"),ArrayList.class));
 
          for (JsonElement jsonSeason : jsonElement.getAsJsonObject().get("seasons").getAsJsonArray()) {
-            Season season = new Season(jsonSeason.getAsJsonObject().get("season").getAsInt());
+            Season season = Season.createSeason(jsonSeason.getAsJsonObject().get("season").getAsInt());
 
             for (JsonElement episodes : jsonSeason.getAsJsonObject().get("episodes").getAsJsonArray()) {
                 JsonObject ep = episodes.getAsJsonObject();
-                season.addEpisode(new Episode(ep.get("airDate").getAsString(),ep.get("number").getAsInt()));
+                season.addEpisode(Episode.createEpisode(ep.get("airDate").getAsString(),ep.get("number").getAsInt()));
             }
             series.addSeason(season);
 
@@ -95,7 +93,7 @@ public class ImdbApi extends RestApi {
         JsonArray jsonArray = jsonResponse.getAsJsonArray();
 
         for (JsonElement jsonElement : jsonArray) {
-            Series s = new Series();
+            Series s = Series.createSeries();
             s.setImdbId(jsonElement.getAsJsonObject().get("id").getAsString());
             s.setTitle(jsonElement.getAsJsonObject().get("title").getAsString());
             series.add(s);

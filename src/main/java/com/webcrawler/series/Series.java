@@ -114,4 +114,12 @@ public class Series {
         }
         return true;
     }
+
+    public static Series createSeries(String title) {
+        return new Series(title);
+    }
+
+    public static Series createSeries() {
+        return new Series();
+    }
 }

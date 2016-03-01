@@ -33,7 +33,7 @@ public class ImdbMobileScraper extends Site {
     }
 
     public Season scrapeSeason() {
-        Season season = new Season(getCurrentSeason());
+        Season season =Season.createSeason(getCurrentSeason());
         season.addEpisodes(scrapeEpisodes());
         return season;
     }
@@ -57,7 +57,7 @@ public class ImdbMobileScraper extends Site {
                 //we should now have the only invalid element left
             }
 
-            episodes.add(new Episode(formatDateString(airDateString), episodeNumber));
+            episodes.add(Episode.createEpisode(formatDateString(airDateString), episodeNumber));
         }
 
         return episodes;

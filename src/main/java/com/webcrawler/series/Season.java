@@ -35,5 +35,9 @@ public class Season {
         return episodes;
     }
 
+    public static Season createSeason(int season){
+        return  new Season(season);
+    }
+
 
 }

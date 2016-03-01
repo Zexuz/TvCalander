@@ -4,11 +4,11 @@ import com.webcrawler.connections.restapi.ImdbApi;
 import com.webcrawler.misc.Common;
 import com.webcrawler.options.Options;
 import com.webcrawler.series.ImdbSeries;
+import com.webcrawler.series.Series;
 import com.webcrawler.torrent.Torrent;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Managers {
     // TODO: 2016-02-22
@@ -45,7 +45,7 @@ public class Managers {
             Change from ImdbSeries to just series
          */
         //1
-        ArrayList<ImdbSeries> imdbSeriesArrayList = imdbApi.getAllSeries();
+        ArrayList<Series> seriesArrayList = imdbApi.getAllSeries();
 
         if (shouldScrapeImdb()) {
             for (String imdbId : siteManager.getImdbIds(0, 50)) {
@@ -58,36 +58,25 @@ public class Managers {
                     continue;
                 }
 
+                Series series = imdbSeries.getSeries();
                 //check if the ArrayList imdbSeriesArrayList contains the current series
-                if (!doesContain(imdbSeriesArrayList, imdbSeries)) {
+                if (!doesContain(seriesArrayList, series)) {
                     //if it does not contain we just update it to the api and continues with the loop
-                    imdbApi.addSeries(imdbSeries);
-                    imdbSeriesArrayList.add(imdbSeries);
+                    imdbApi.addSeries(series);
+                    seriesArrayList.add(series);
                     continue;
                 }
 
 
                 //check if we should update a series eg, imdb has new data
-                for (ImdbSeries apiSeriesShortInfo : imdbSeriesArrayList) {
-                    if (apiSeriesShortInfo.getId().equals(imdbSeries.getId())) {
+                for (Series apiSeriesShortInfo : seriesArrayList) {
+                    if (apiSeriesShortInfo.getImdbId().equals(series.getImdbId())) {
+
                         //check if our old seasons data is correct.
+                        Series apiSeriesFullInfo = imdbApi.getOneSeries(apiSeriesShortInfo.getImdbId());
 
-                        ImdbSeries apiSeriesFullInfo = imdbApi.getOneSeries(apiSeriesShortInfo.getId());
-                        if(!apiSeriesFullInfo.getSeasons().equals(imdbSeries.getSeasons())){
-                            System.out.println("seasons is not the same");
-                            imdbApi.updateSeries(imdbSeries);
-                            break;
-                        }
-
-                        //not the same image
-                        if(!apiSeriesFullInfo.getImgLink().equals(imdbSeries.getImgLink())){
-                            imdbApi.updateSeries(imdbSeries);
-                            break;
-                        }
-
-                        //not the same title (yes I know, what's the odds...)
-                        if (!apiSeriesFullInfo.getTitle().equals(imdbSeries.getTitle())) {
-                            imdbApi.updateSeries(imdbSeries);
+                        if(!apiSeriesFullInfo.isSame(series)){
+                            imdbApi.updateSeries(series);
                             break;
                         }
                     }
@@ -99,9 +88,9 @@ public class Managers {
         //2
         ArrayList<Torrent> torrents = siteManager.getRecentTorrentPages(5);
         //3
-        ArrayList<Torrent> matchedTorrents = pairTorrentAndSeries(torrents, imdbSeriesArrayList);
+        ArrayList<Torrent> matchedTorrents = pairTorrentAndSeries(torrents, seriesArrayList);
 
-        System.out.println(String.format("the list was %d, found %d torrents, matches %d ", imdbSeriesArrayList.size(), torrents.size(), matchedTorrents.size()));
+        System.out.println(String.format("the list was %d, found %d torrents, matches %d ", seriesArrayList.size(), torrents.size(), matchedTorrents.size()));
         System.out.println(Common.toJson(matchedTorrents));
 
         //4
@@ -109,10 +98,10 @@ public class Managers {
 
     }
 
-    private boolean doesContain(ArrayList<ImdbSeries> imdbSeriesArrayList, ImdbSeries imdbSeries) {
+    private boolean doesContain(ArrayList<Series> seriesArrayList, Series imdbSeries) {
         boolean contains = false;
-        for (ImdbSeries imdbSery : imdbSeriesArrayList) {
-            if (imdbSery.getId().equals(imdbSeries.getId())) contains = true;
+        for (Series tempSeries : seriesArrayList) {
+            if (tempSeries.getImdbId().equals(imdbSeries.getImdbId())) contains = true;
         }
 
         return contains;
@@ -122,15 +111,15 @@ public class Managers {
         return true;
     }
 
-    private ArrayList<Torrent> pairTorrentAndSeries(ArrayList<Torrent> torrents, ArrayList<ImdbSeries> imdbSeriesArrayList) {
+    private ArrayList<Torrent> pairTorrentAndSeries(ArrayList<Torrent> torrents, ArrayList<Series> seriesArrayList) {
         ArrayList<Torrent> matchedTorrents = new ArrayList<>();
-        for (ImdbSeries imdbSeries : imdbSeriesArrayList) {
+        for (Series series : seriesArrayList) {
 
             for (Torrent torrent : torrents) {
 
                 if (!torrent.isSeries()) continue;
 
-                if (Common.isTorrentMatch(imdbSeries, torrent)) {
+                if (TorrentManager.isTorrentMatch(series, torrent)) {
                     matchedTorrents.add(torrent);
                 }
 

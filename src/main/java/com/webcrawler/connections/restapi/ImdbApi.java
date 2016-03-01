@@ -1,14 +1,15 @@
 package com.webcrawler.connections.restapi;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import com.webcrawler.managers.Managers;
 import com.webcrawler.misc.Common;
-import com.webcrawler.series.ImdbSeries;
+import com.webcrawler.series.Episode;
+import com.webcrawler.series.Season;
+import com.webcrawler.series.Series;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class ImdbApi extends RestApi {
@@ -18,7 +19,7 @@ public class ImdbApi extends RestApi {
         super(managers.options.getHostAndPortForREST(), "ImdbService", "v1");
     }
 
-    public ArrayList<ImdbSeries> getAllSeries() {
+    public ArrayList<Series> getAllSeries() {
         String data;
 
         try {
@@ -31,7 +32,7 @@ public class ImdbApi extends RestApi {
         return stringToSeries(data);
     }
 
-    public ImdbSeries addSeries(ImdbSeries series) {
+    public Series addSeries(Series series) {
         try {
             return stringToOneSeries(sendPost("Series", imdbSeriesToJsonString(series)));
         } catch (Exception e) {
@@ -40,7 +41,7 @@ public class ImdbApi extends RestApi {
         return null;
     }
 
-    public ImdbSeries getOneSeries(String seriesId) {
+    public Series getOneSeries(String seriesId) {
         try {
             return stringToOneSeries(sendGet("Series/" + seriesId));
         } catch (IOException e) {
@@ -50,37 +51,52 @@ public class ImdbApi extends RestApi {
 
     }
 
-    public ImdbSeries updateSeries(ImdbSeries series) {
+    public Series updateSeries(Series series) {
         try {
-            return stringToOneSeries(sendPut("Series/" + series.getId(), imdbSeriesToJsonString(series)));
+            return stringToOneSeries(sendPut("Series/" + series.getImdbId(), imdbSeriesToJsonString(series)));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    private ImdbSeries stringToOneSeries(String response) {
+    private Series stringToOneSeries(String response) {
         JsonParser parser = new JsonParser();
         JsonElement jsonElement = parser.parse(response);
 
-        ImdbSeries series = Managers.createSeries(jsonElement.getAsJsonObject().get("id").getAsString());
+        Series series = new Series();
+        series.setImdbId(jsonElement.getAsJsonObject().get("id").getAsString());
         series.setTitle(jsonElement.getAsJsonObject().get("title").getAsString());
-        series.setYear(jsonElement.getAsJsonObject().get("year").getAsString());
+        series.setStartYear(jsonElement.getAsJsonObject().get("year").getAsString());
         series.setImgLink(jsonElement.getAsJsonObject().get("imgLink").getAsString());
-        series.setSeasons(new Gson().fromJson(jsonElement.getAsJsonObject().get("seasons"),ArrayList.class));
+
+        //series.setSeasons(new Gson().fromJson(jsonElement.getAsJsonObject().get("seasons"),ArrayList.class));
+
+         for (JsonElement jsonSeason : jsonElement.getAsJsonObject().get("seasons").getAsJsonArray()) {
+            Season season = new Season(jsonSeason.getAsJsonObject().get("season").getAsInt());
+
+            for (JsonElement episodes : jsonSeason.getAsJsonObject().get("episodes").getAsJsonArray()) {
+                JsonObject ep = episodes.getAsJsonObject();
+                season.addEpisode(new Episode(ep.get("airDate").getAsString(),ep.get("number").getAsInt()));
+            }
+            series.addSeason(season);
+
+        }
+
 
         return series;
     }
 
-    private ArrayList<ImdbSeries> stringToSeries(String response) {
-        ArrayList<ImdbSeries> series = new ArrayList<>();
+    private ArrayList<Series> stringToSeries(String response) {
+        ArrayList<Series> series = new ArrayList<>();
 
         JsonParser parser = new JsonParser();
         JsonElement jsonResponse = parser.parse(response);
         JsonArray jsonArray = jsonResponse.getAsJsonArray();
 
         for (JsonElement jsonElement : jsonArray) {
-            ImdbSeries s = Managers.createSeries(jsonElement.getAsJsonObject().get("id").getAsString());
+            Series s = new Series();
+            s.setImdbId(jsonElement.getAsJsonObject().get("id").getAsString());
             s.setTitle(jsonElement.getAsJsonObject().get("title").getAsString());
             series.add(s);
         }
@@ -88,13 +104,13 @@ public class ImdbApi extends RestApi {
         return series;
     }
 
-    private String imdbSeriesToJsonString(ImdbSeries series) {
+    private String imdbSeriesToJsonString(Series series) {
         String res;
         res = "{" +
                 "\"title\":\"" + series.getTitle() + "\"," +
-                "\"id\":\"" + series.getId() + "\"," +
+                "\"id\":\"" + series.getImdbId() + "\"," +
                 "\"imgLink\":\"" + series.getImgLink() + "\"," +
-                "\"year\":\"" + series.getYear() + "\"" +
+                "\"year\":\"" + series.getStartYear() + "\"" +
                 ",\"seasons\":" + Common.toJson(series.getSeasons()) +
                 "}";
 

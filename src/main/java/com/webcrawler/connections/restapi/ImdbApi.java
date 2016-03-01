@@ -1,5 +1,6 @@
 package com.webcrawler.connections.restapi;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -51,7 +52,7 @@ public class ImdbApi extends RestApi {
 
     public ImdbSeries updateSeries(ImdbSeries series) {
         try {
-            return stringToOneSeries(sendPut("Series", imdbSeriesToJsonString(series)));
+            return stringToOneSeries(sendPut("Series/" + series.getId(), imdbSeriesToJsonString(series)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,6 +67,7 @@ public class ImdbApi extends RestApi {
         series.setTitle(jsonElement.getAsJsonObject().get("title").getAsString());
         series.setYear(jsonElement.getAsJsonObject().get("year").getAsString());
         series.setImgLink(jsonElement.getAsJsonObject().get("imgLink").getAsString());
+        series.setSeasons(new Gson().fromJson(jsonElement.getAsJsonObject().get("seasons"),ArrayList.class));
 
         return series;
     }
@@ -93,7 +95,7 @@ public class ImdbApi extends RestApi {
                 "\"id\":\"" + series.getId() + "\"," +
                 "\"imgLink\":\"" + series.getImgLink() + "\"," +
                 "\"year\":\"" + series.getYear() + "\"" +
-                //",\"seasons\":\"" + Common.toJson(series.getSeasons()) + "\"" +
+                ",\"seasons\":" + Common.toJson(series.getSeasons()) +
                 "}";
 
         return res;

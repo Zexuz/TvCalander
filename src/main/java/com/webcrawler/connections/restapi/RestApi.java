@@ -65,7 +65,7 @@ public abstract class RestApi {
 
         int responseCode = con.getResponseCode();
         System.out.println("\nSending '"+method+"' request to URL : " + getWholeUrl(path));
-        System.out.println("Post parameters : " + urlParameters);
+        //System.out.println("Post parameters : " + urlParameters);
         System.out.println("Response Code : " + responseCode);
 
 

@@ -16,6 +16,13 @@ public class Managers {
     /*
         change SiteManager to WebScraperManager?
      */
+
+    // TODO: 2016-03-01
+    /*
+        title in the database should be original format and not lowercase
+        make a schedule for scraping imdb
+        scrape thepirate bay as often as neccecary
+     */
     private SiteManager siteManager;
     private ImdbApi imdbApi;
     public Options options;

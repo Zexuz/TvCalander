@@ -1,4 +1,4 @@
-package com.webcrawler.site.sites;
+package com.webcrawler.site.imdb;
 
 import com.webcrawler.site.Site;
 import org.jsoup.nodes.Document;

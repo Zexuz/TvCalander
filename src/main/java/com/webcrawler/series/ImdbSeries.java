@@ -1,9 +1,11 @@
 package com.webcrawler.series;
 
 import com.webcrawler.site.Site;
+import com.webcrawler.site.imdb.ImdbMobileScraper;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,18 +13,22 @@ public class ImdbSeries extends Site {
 
     private static final String url = "http://m.imdb.com";
 
+    private ImdbMobileScraper imdbMobileScraper;
 
     private String id;
     private String title = null;
     private String year = null;
     private String imgLink = null;
 
+    private ArrayList<Season> seasons = null;
+
     private boolean hasValidHeaders;
 
     public ImdbSeries(String id) {
         super(url);
         this.id = id;
-
+        imdbMobileScraper = new ImdbMobileScraper();
+        imdbMobileScraper.setId(id);
 
         setPath("/title/tt" + id);
     }
@@ -32,9 +38,15 @@ public class ImdbSeries extends Site {
         super.load();
 
         hasValidHeaders = hasValidHeader();
-        if(!hasValidHeaders)
+        if (!hasValidHeaders)
             return;
         setImgLink(scrapeImg());
+
+
+        if (!hasSeason())
+            return;
+
+        seasons = getSeasons();
     }
 
     public boolean isPageValid() {
@@ -86,6 +98,14 @@ public class ImdbSeries extends Site {
 
     //==========================================
 
+    public Series getSeries() {
+        Series series = new Series(getTitle());
+        series.addSeasons(getSeasons());
+        series.setImdbId(getId());
+        series.setStartYear(getYear());
+        return series;
+    }
+
     public String getId() {
         return id;
     }
@@ -113,4 +133,17 @@ public class ImdbSeries extends Site {
     public String getImgLink() {
         return imgLink;
     }
+
+    public void setSeasons(ArrayList<Season> seasons) {
+        this.seasons = seasons;
+    }
+
+    public ArrayList<Season> getSeasons() {
+        if (seasons == null) {
+            imdbMobileScraper.load();
+            seasons = imdbMobileScraper.getSeasonArrayList();
+        }
+        return seasons;
+    }
+
 }

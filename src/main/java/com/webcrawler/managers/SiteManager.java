@@ -1,6 +1,6 @@
 package com.webcrawler.managers;
 
-import com.webcrawler.site.sites.Imdb;
+import com.webcrawler.site.imdb.Imdb;
 import com.webcrawler.site.sites.Rss;
 import com.webcrawler.site.sites.TPB;
 import com.webcrawler.torrent.Torrent;

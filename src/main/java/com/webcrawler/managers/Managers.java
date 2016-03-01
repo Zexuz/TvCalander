@@ -40,6 +40,10 @@ public class Managers {
         //3 compare ids and torrents.
         //4 if it's a show we are looking for, add the torrent to the database.
 
+        // TODO: 2016-03-01
+        /*
+            Change from ImdbSeries to just series
+         */
         //1
         ArrayList<ImdbSeries> imdbSeriesArrayList = imdbApi.getAllSeries();
 
@@ -68,8 +72,14 @@ public class Managers {
                     if (apiSeriesShortInfo.getId().equals(imdbSeries.getId())) {
                         //check if our old seasons data is correct.
 
-                        //not the same image
                         ImdbSeries apiSeriesFullInfo = imdbApi.getOneSeries(apiSeriesShortInfo.getId());
+                        if(!apiSeriesFullInfo.getSeasons().equals(imdbSeries.getSeasons())){
+                            System.out.println("seasons is not the same");
+                            imdbApi.updateSeries(imdbSeries);
+                            break;
+                        }
+
+                        //not the same image
                         if(!apiSeriesFullInfo.getImgLink().equals(imdbSeries.getImgLink())){
                             imdbApi.updateSeries(imdbSeries);
                             break;

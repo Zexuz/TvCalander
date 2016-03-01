@@ -1,5 +1,6 @@
 package com.webcrawler.torrent;
 
+import com.webcrawler.managers.TorrentManager;
 import com.webcrawler.misc.Common;
 
 import java.util.Date;
@@ -19,7 +20,7 @@ public class Torrent {
 
 
     public Torrent(String title, Date pubDate, String siteLink, String torrentLink, String upLoader, String upLoaderStatus) {
-        this.title = Common.reformatTitle(title);
+        this.title = TorrentManager.reformatTitle(title);
         this.pubDate = pubDate;
         this.siteLink = siteLink;
         this.torrentLink = torrentLink;

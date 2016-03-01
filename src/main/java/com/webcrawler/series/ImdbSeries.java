@@ -103,6 +103,7 @@ public class ImdbSeries extends Site {
         series.addSeasons(getSeasons());
         series.setImdbId(getId());
         series.setStartYear(getYear());
+        series.setImgLink(getImgLink());
         return series;
     }
 

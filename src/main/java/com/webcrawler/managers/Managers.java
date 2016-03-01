@@ -58,6 +58,7 @@ public class Managers {
                 if (!doesContain(imdbSeriesArrayList, imdbSeries)) {
                     //if it does not contain we just update it to the api and continues with the loop
                     imdbApi.addSeries(imdbSeries);
+                    imdbSeriesArrayList.add(imdbSeries);
                     continue;
                 }
 

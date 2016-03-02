@@ -20,14 +20,19 @@ public class MainThread implements Runnable {
     @Override
     public void run() {
 
-
-        running = false;
-
-        managers.tick();
-
         while (running) {
-        }
 
+            try {
+                managers.tick();
+                //we now sleep for 1 min
+                System.out.println("------sleeping----------------------");
+
+                Thread.sleep(1000 * 60);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
 
     }
 

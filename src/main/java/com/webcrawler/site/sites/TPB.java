@@ -39,6 +39,14 @@ public class TPB extends Site {
         setPath(path + --currentIndex);
     }
 
+    public void resetPath(){
+        int lastDash = getPath().lastIndexOf('/') + 1;
+        String path = getPath().substring(0, lastDash);
+
+
+        setPath(path + 0);
+    }
+
     public WebConnection getWebConn() {
         return webConn;
     }

@@ -41,8 +41,13 @@ public class SiteManager {
             thePirateBay.next();
         }
 
+        thePirateBay.resetPath();
+
         return t;
     }
 
 
+    public boolean shouldScrapeImdb() {
+        return imdb.shouldScrape();
+    }
 }

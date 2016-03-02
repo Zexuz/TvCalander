@@ -17,11 +17,6 @@ public class Managers {
         change SiteManager to WebScraperManager?
      */
 
-    // TODO: 2016-03-01
-    /*
-        make a schedule for scraping imdb
-        scrape thepirate bay as often as neccecary
-     */
     private SiteManager siteManager;
     private ImdbApi imdbApi;
     public Options options;
@@ -41,7 +36,7 @@ public class Managers {
     }
 
 
-    public void tick() {
+    public void tick() throws InterruptedException {
         //1 get active shows from imdb once every day and post it to the database
         //2 search thePirateBay and other sites after those torrents
         //3 compare ids and torrents.
@@ -49,12 +44,13 @@ public class Managers {
 
         ArrayList<Series> seriesArrayList = imdbApi.getAllSeries();
 
-        if (shouldScrapeImdb()) {
+        if (siteManager.shouldScrapeImdb()) {
             for (String imdbId : siteManager.getImdbIds(0, 50)) {
                 //s is
                 ImdbSeries imdbSeries = Imdb.createImdbSeries(imdbId);
                 imdbSeries.load();
 
+                Thread.sleep(3000);
                 if (!imdbSeries.isPageValid()) {
                     System.out.println(imdbSeries.getId() + " is not valid");
                     continue;
@@ -88,7 +84,7 @@ public class Managers {
 
 
         //2
-        ArrayList<Torrent> torrents = siteManager.getRecentTorrentPages(5);
+        ArrayList<Torrent> torrents = siteManager.getRecentTorrentPages(3);
         //3
         ArrayList<Torrent> matchedTorrents = pairTorrentAndSeries(torrents, seriesArrayList);
 
@@ -109,20 +105,14 @@ public class Managers {
         return contains;
     }
 
-    private boolean shouldScrapeImdb() {
-        return true;
-    }
-
     private ArrayList<Torrent> pairTorrentAndSeries(ArrayList<Torrent> torrents, ArrayList<Series> seriesArrayList) {
         ArrayList<Torrent> matchedTorrents = new ArrayList<>();
         for (Series series : seriesArrayList) {
-
             for (Torrent torrent : torrents) {
-
-                if (!torrent.isSeries()) continue;
 
                 if (TorrentManager.isTorrentMatch(series, torrent)) {
                     matchedTorrents.add(torrent);
+                    series.getSeason(torrent.getSeasonNumber()).getEpisode(torrent.getEpisodeNumber());
                 }
 
             }

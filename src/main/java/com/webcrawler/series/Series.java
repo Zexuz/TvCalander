@@ -72,8 +72,7 @@ public class Series {
         this.seasons = seasons;
     }
 
-    public boolean isSame(Series series) {
-        System.out.printf("doing series %s",series.getTitle());
+    public boolean isSame(Series series, boolean includeTorrent) {
 
         if (!getImgLink().equals(series.getImgLink())) {
             System.out.println("link");
@@ -122,13 +121,11 @@ public class Series {
                     return false;
                 }
 
-
-                if (ep1.getTorrents().size() != ep2.getTorrents().size()) {
-                    System.out.printf("\ntorrent size 1 %d",ep1.getTorrents().size());
-                    System.out.printf("\ntorrent size 2 %d",ep2.getTorrents().size());
-                    System.out.println("torrent size");
-                    return false;
-                }
+                if (includeTorrent)
+                    if (ep1.getTorrents().size() != ep2.getTorrents().size()) {
+                        System.out.println("torrent size");
+                        return false;
+                    }
 
 
             }

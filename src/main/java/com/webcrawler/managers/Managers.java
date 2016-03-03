@@ -1,8 +1,10 @@
 package com.webcrawler.managers;
 
 import com.webcrawler.connections.restapi.ImdbApi;
+import com.webcrawler.misc.Common;
 import com.webcrawler.options.Options;
 import com.webcrawler.series.ImdbSeries;
+import com.webcrawler.series.Season;
 import com.webcrawler.series.Series;
 import com.webcrawler.site.imdb.Imdb;
 import com.webcrawler.torrent.Torrent;
@@ -90,7 +92,7 @@ public class Managers {
         }
 
         //2
-        ArrayList<Torrent> torrents = siteManager.getRecentTorrentPages(3);
+        ArrayList<Torrent> torrents = siteManager.getRecentTorrentPages(30);
         //3
         // we need to remove every series in seriesFullList that does not have a torrent match
         if (scrapeImdb) {
@@ -108,21 +110,28 @@ public class Managers {
             Series oldDataSeries = imdbApi.getOneSeries(series.getImdbId());
             for (Torrent torrent : torrents) {
                 if (TorrentManager.isTorrentMatch(series, torrent)) {
-                    ArrayList<Torrent> episodeTorrents =
+
+                    try {
+                        ArrayList<Torrent> episodeTorrents =
+                                series.
+                                        getSeason(Integer.parseInt(torrent.getSeasonNumber())).
+                                        getEpisode(Integer.parseInt(torrent.getEpisodeNumber())).getTorrents();
+
+                        boolean add = true;
+                        for (Torrent episodeTorrent : episodeTorrents) {
+                            if (Objects.equals(episodeTorrent.getSiteLink(), torrent.getSiteLink())) {
+                                add = false;
+                            }
+                        }
+                        if (add)
                             series.
                                     getSeason(Integer.parseInt(torrent.getSeasonNumber())).
-                                    getEpisode(Integer.parseInt(torrent.getEpisodeNumber())).getTorrents();
+                                    getEpisode(Integer.parseInt(torrent.getEpisodeNumber())).addTorrent(torrent);
 
-                    boolean add = true;
-                    for (Torrent episodeTorrent : episodeTorrents) {
-                        if (Objects.equals(episodeTorrent.getSiteLink(), torrent.getSiteLink())) {
-                            add = false;
-                        }
+
+                    }catch (IndexOutOfBoundsException e){
+                        System.err.println("Series episode out of bounds, someone is retarded");
                     }
-                    if (add)
-                        series.
-                                getSeason(Integer.parseInt(torrent.getSeasonNumber())).
-                                getEpisode(Integer.parseInt(torrent.getEpisodeNumber())).addTorrent(torrent);
 
                 }
 

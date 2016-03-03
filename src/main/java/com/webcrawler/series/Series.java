@@ -110,6 +110,10 @@ public class Series {
                 if (ep1.getNumber() != ep2.getNumber())
                     return false;
 
+                if (ep1.getTorrents().size() != ep2.getTorrents().size())
+                    return false;
+
+
             }
         }
         return true;

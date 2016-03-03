@@ -3,6 +3,7 @@ package com.webcrawler.torrent;
 import com.webcrawler.managers.TorrentManager;
 import com.webcrawler.misc.Common;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -63,27 +64,27 @@ public class Torrent {
         return title.toLowerCase().matches(regexp);
     }
 
-    public String getEpisodeNumber() {
+    public int getEpisodeNumber() {
 
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(title.toLowerCase());
 
         if (matcher.matches()) {
-            return matcher.toMatchResult().group(2);
+            return Integer.parseInt(matcher.toMatchResult().group(2));
         }
 
-        return null;
+        return 0;
     }
 
-    public String getSeasonNumber() {
+    public int getSeasonNumber() {
 
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(title.toLowerCase());
 
         if (matcher.matches()) {
-            return matcher.toMatchResult().group(1);
+            return Integer.parseInt(matcher.toMatchResult().group(1));
         }
 
-        return null;
+        return 0;
     }
 }

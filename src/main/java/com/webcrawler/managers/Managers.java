@@ -92,7 +92,7 @@ public class Managers {
         }
 
         //2
-        ArrayList<Torrent> torrents = siteManager.getRecentTorrentPages(30);
+        ArrayList<Torrent> torrents = siteManager.getRecentTorrentPages(3);
         //3
         // we need to remove every series in seriesFullList that does not have a torrent match
         if (scrapeImdb) {

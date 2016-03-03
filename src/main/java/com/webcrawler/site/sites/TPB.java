@@ -53,7 +53,7 @@ public class TPB extends Site {
 
     public HashMap<String, String> getCookies() {
         try {
-            Connection.Response res = Jsoup.connect("https://ahoy.re/switchview.php?view=s")
+            Connection.Response res = Jsoup.connect("https://thepiratebay.se/switchview.php?view=s")
                     .userAgent(WebConnection.HEADER_MOBILE)
                     .referrer(WebConnection.REFERRER_GOOGLE)
                     .data("view", "s")
@@ -125,7 +125,7 @@ public class TPB extends Site {
             }
         }
 
-        return TorrentManager.createTorrent(title, pubDate, siteLink, torrentLink, upLoader, upLoaderStatus);
+        return TorrentManager.createTorrent(title, pubDate+"", siteLink, torrentLink, upLoader, upLoaderStatus);
     }
 
 }

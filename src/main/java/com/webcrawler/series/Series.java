@@ -45,7 +45,7 @@ public class Series {
     }
 
     public Season getSeason(int index) {
-        return seasons.get(index);
+        return seasons.get(--index);
     }
 
     public ArrayList<Season> getSeasons() {
@@ -73,45 +73,62 @@ public class Series {
     }
 
     public boolean isSame(Series series) {
+        System.out.printf("doing series %s",series.getTitle());
 
-        if (!getImdbId().equals(series.getImdbId()))
+        if (!getImgLink().equals(series.getImgLink())) {
+            System.out.println("link");
             return false;
+        }
 
 
-        if (!getImgLink().equals(series.getImgLink()))
+        if (!getStartYear().equals(series.getStartYear())) {
+            System.out.println("year");
+
             return false;
+        }
 
 
-        if (!getStartYear().equals(series.getStartYear()))
+        if (!getTitle().equals(series.getTitle())) {
+            System.out.println("title");
             return false;
+        }
 
-
-        if (!getTitle().equals(series.getTitle()))
+        if (getSeasons().size() != series.getSeasons().size()) {
+            System.out.println("seasons size");
             return false;
-
-        if (getSeasons().size() != series.getSeasons().size())
-            return false;
+        }
 
         for (int i = 0; i < seasons.size(); i++) {
             Season cs1 = seasons.get(i);
             Season cs2 = series.seasons.get(i);
 
-            if (cs1.getEpisodes().size() != cs2.getEpisodes().size())
+            if (cs1.getEpisodes().size() != cs2.getEpisodes().size()) {
+                System.out.println("episode size");
                 return false;
+            }
 
             for (int episodeIndex = 0; episodeIndex < cs1.getEpisodes().size(); episodeIndex++) {
                 Episode ep1 = cs1.getEpisodes().get(episodeIndex);
                 Episode ep2 = cs2.getEpisodes().get(episodeIndex);
 
-                if (!ep1.getAirDate().equals(ep2.getAirDate()))
+                if (!ep1.getAirDate().equals(ep2.getAirDate())) {
+                    System.out.println("air dates");
                     return false;
+                }
 
 
-                if (ep1.getNumber() != ep2.getNumber())
+                if (ep1.getNumber() != ep2.getNumber()) {
+                    System.out.println("episode number");
                     return false;
+                }
 
-                if (ep1.getTorrents().size() != ep2.getTorrents().size())
+
+                if (ep1.getTorrents().size() != ep2.getTorrents().size()) {
+                    System.out.printf("\ntorrent size 1 %d",ep1.getTorrents().size());
+                    System.out.printf("\ntorrent size 2 %d",ep2.getTorrents().size());
+                    System.out.println("torrent size");
                     return false;
+                }
 
 
             }

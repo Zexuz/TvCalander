@@ -20,7 +20,6 @@ public class Episode {
 
     public void addTorrent(Torrent torrent){
         if(!torrents.contains(torrent)){
-            System.out.println("adding torrent");
             torrents.add(torrent);
             return;
         }

@@ -28,7 +28,7 @@ public class Season {
     }
 
     public Episode getEpisode(int index){
-        return episodes.get(index);
+        return episodes.get(--index);
     }
 
     public ArrayList<Episode> getEpisodes() {

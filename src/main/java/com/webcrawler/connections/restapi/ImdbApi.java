@@ -2,10 +2,12 @@ package com.webcrawler.connections.restapi;
 
 import com.google.gson.*;
 import com.webcrawler.managers.Managers;
+import com.webcrawler.managers.TorrentManager;
 import com.webcrawler.misc.Common;
 import com.webcrawler.series.Episode;
 import com.webcrawler.series.Season;
 import com.webcrawler.series.Series;
+import com.webcrawler.torrent.Torrent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,7 +77,26 @@ public class ImdbApi extends RestApi {
 
             for (JsonElement episodes : jsonSeason.getAsJsonObject().get("episodes").getAsJsonArray()) {
                 JsonObject ep = episodes.getAsJsonObject();
-                season.addEpisode(Episode.createEpisode(ep.get("airDate").getAsString(),ep.get("number").getAsInt()));
+
+                Episode episode = Episode.createEpisode(ep.get("airDate").getAsString(),ep.get("number").getAsInt());
+
+                for (JsonElement torrents : ep.get("torrents").getAsJsonArray()) {
+                    JsonObject tr = torrents.getAsJsonObject();
+
+                    String title = tr.get("title").getAsString();
+                    String date = tr.get("pubDate").getAsString();
+                    String siteLink = tr.get("siteLink").getAsString();
+                    String torrentLink = tr.get("torrentLink").getAsString();
+                    String upLoader = tr.get("upLoader").getAsString();
+                    String upLoaderStatus = tr.get("upLoaderStatus").getAsString();
+
+                    Torrent torrent = TorrentManager.createTorrent(title,date,siteLink,torrentLink,upLoader,upLoaderStatus);
+                    episode.addTorrent(torrent);
+                }
+
+                season.addEpisode(episode);
+
+
             }
             series.addSeason(season);
 

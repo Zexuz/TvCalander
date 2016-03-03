@@ -3,7 +3,7 @@ package com.webcrawler.torrent;
 import com.webcrawler.managers.TorrentManager;
 import com.webcrawler.misc.Common;
 
-import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,12 +15,12 @@ public class Torrent {
     protected String originalTitle;
     private String siteLink;
     private String torrentLink;
-    private Date pubDate;
+    private String pubDate;
     private String upLoader;
     private String upLoaderStatus;
 
 
-    public Torrent(String title, Date pubDate, String siteLink, String torrentLink, String upLoader, String upLoaderStatus) {
+    public Torrent(String title, String pubDate, String siteLink, String torrentLink, String upLoader, String upLoaderStatus) {
         this.title = TorrentManager.reformatTitle(title);
         this.pubDate = pubDate;
         this.siteLink = siteLink;
@@ -35,7 +35,7 @@ public class Torrent {
         return originalTitle;
     }
 
-    public Date getPubDate() {
+    public String getPubDate() {
         return pubDate;
     }
 
@@ -64,27 +64,29 @@ public class Torrent {
         return title.toLowerCase().matches(regexp);
     }
 
-    public int getEpisodeNumber() {
+    //this returns a String because a episode is listed with xx like 04 or 11 not 4
+    public String getEpisodeNumber() {
 
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(title.toLowerCase());
 
         if (matcher.matches()) {
-            return Integer.parseInt(matcher.toMatchResult().group(2));
+            return matcher.toMatchResult().group(2);
         }
 
-        return 0;
+        return null;
     }
 
-    public int getSeasonNumber() {
+    //this returns a String because a seasons is listed with xx like 04 or 11 not 4
+    public String getSeasonNumber() {
 
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(title.toLowerCase());
 
         if (matcher.matches()) {
-            return Integer.parseInt(matcher.toMatchResult().group(1));
+            return matcher.toMatchResult().group(1);
         }
 
-        return 0;
+        return null;
     }
 }

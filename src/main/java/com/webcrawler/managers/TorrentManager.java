@@ -23,7 +23,8 @@ public class TorrentManager {
             return false;
         }
 
-        if (torrent.getTitle().indexOf(imdbSeriesTitle) > torrent.getTitle().indexOf("s" + torrent.getSeasonNumber() + "e" + torrent.getEpisodeNumber())) {
+        if (torrent.getTitle().indexOf(imdbSeriesTitle) >
+                torrent.getTitle().indexOf("s" + torrent.getSeasonNumber() + "e" + torrent.getEpisodeNumber())) {
             System.out.println("the match is not done on the title");
             System.out.println("TorrentTitle:" + torrent.getTitle());
             System.out.println("Series title:" + imdbSeriesTitle);
@@ -33,7 +34,7 @@ public class TorrentManager {
 
         String version = "s" + torrent.getSeasonNumber() + "e" + torrent.getEpisodeNumber();
 
-        String onlyTitle  = torrent.getTitle().substring(0,torrent.getTitle().indexOf(version));
+        String onlyTitle = torrent.getTitle().substring(0, torrent.getTitle().indexOf(version));
 
         return onlyTitle.trim().equals(imdbSeriesTitle.trim());
 
@@ -49,8 +50,8 @@ public class TorrentManager {
     }
 
 
-    public static Torrent createTorrent(String title, Date pubDate, String siteLink, String torrentLink, String upLoader,String upLoaderStatus){
-        return new Torrent(title,pubDate,siteLink,torrentLink,upLoader,upLoaderStatus);
+    public static Torrent createTorrent(String title, String pubDate, String siteLink, String torrentLink, String upLoader, String upLoaderStatus) {
+        return new Torrent(title, pubDate, siteLink, torrentLink, upLoader, upLoaderStatus);
     }
 
 }

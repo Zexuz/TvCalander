@@ -10,7 +10,9 @@ import com.webcrawler.series.Series;
 import com.webcrawler.torrent.Torrent;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ImdbApi extends RestApi {
 
@@ -44,9 +46,8 @@ public class ImdbApi extends RestApi {
         JsonParser parser = new JsonParser();
         JsonElement jsonElement = parser.parse(response);
 
-        if(!jsonElement.getAsJsonObject().get("success").getAsBoolean()){
-            throw new IllegalStateException("API success response is false");
-        }
+        if (!isResponseValid(jsonElement)) throw new IllegalStateException("API success response is false");
+
         jsonElement = jsonElement.getAsJsonObject().get("data");
 
         Series series = Series.createSeries();
@@ -97,9 +98,7 @@ public class ImdbApi extends RestApi {
         JsonParser parser = new JsonParser();
         JsonElement jsonResponse = parser.parse(response);
 
-        if(!jsonResponse.getAsJsonObject().get("success").getAsBoolean()){
-            throw new IllegalStateException("API success response is false");
-        }
+        if (!isResponseValid(jsonResponse)) throw new IllegalStateException("API success response is false");
 
         JsonArray jsonArray = jsonResponse.getAsJsonObject().get("data").getAsJsonArray();
 
@@ -127,4 +126,17 @@ public class ImdbApi extends RestApi {
     }
 
 
+    public boolean shouldScrapeImdb() throws IOException, ParseException {
+        String response = sendGet("Info");
+
+        JsonParser parser = new JsonParser();
+        JsonElement jsonElement = parser.parse(response);
+
+        if (!isResponseValid(jsonElement)) throw new IllegalStateException("API success response is false");
+
+        Date nextScrape = new Date(jsonElement.getAsJsonObject().get("data").getAsJsonObject().get("nextScrape").getAsLong());
+        Date currentTime = new Date();
+
+        return currentTime.getTime() >= nextScrape.getTime();
+    }
 }

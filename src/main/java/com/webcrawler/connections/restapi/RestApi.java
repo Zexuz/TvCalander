@@ -1,5 +1,7 @@
 package com.webcrawler.connections.restapi;
 
+import com.google.gson.JsonElement;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -22,7 +24,7 @@ public abstract class RestApi {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + getWholeUrl(method) );
+        System.out.println("\nSending 'GET' request to URL : " + getWholeUrl(method));
         System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
@@ -39,15 +41,15 @@ public abstract class RestApi {
 
     }
 
-    protected String sendPost(String path,String urlParameters) throws Exception {
-        return sendRequest(path,urlParameters,"POST");
+    protected String sendPost(String path, String urlParameters) throws Exception {
+        return sendRequest(path, urlParameters, "POST");
     }
 
-    protected String sendPut(String path,String urlParameters) throws Exception {
-        return sendRequest(path,urlParameters,"PUT");
+    protected String sendPut(String path, String urlParameters) throws Exception {
+        return sendRequest(path, urlParameters, "PUT");
     }
 
-    private String sendRequest(String path,String urlParameters,String method) throws Exception {
+    private String sendRequest(String path, String urlParameters, String method) throws Exception {
 
         URL obj = new URL(getWholeUrl(path));
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -64,15 +66,15 @@ public abstract class RestApi {
         writer.close();
 
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending '"+method+"' request to URL : " + getWholeUrl(path));
+        System.out.println("\nSending '" + method + "' request to URL : " + getWholeUrl(path));
         //System.out.println("Post parameters : " + urlParameters);
         System.out.println("Response Code : " + responseCode);
 
 
         InputStream inputStream;
-        if(responseCode != 200){
-            inputStream =con.getErrorStream();
-        }else{
+        if (responseCode != 200) {
+            inputStream = con.getErrorStream();
+        } else {
             inputStream = con.getInputStream();
         }
 
@@ -88,6 +90,10 @@ public abstract class RestApi {
 
         //print result
         return response.toString();
+    }
+
+    protected boolean isResponseValid(JsonElement jsonElement) {
+        return jsonElement.getAsJsonObject().get("success").getAsBoolean();
     }
 
     protected String getWholeUrl(String method) {

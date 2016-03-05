@@ -19,36 +19,16 @@ public class ImdbApi extends RestApi {
         super(managers.options.getHostAndPortForREST(), "ImdbService", "v1");
     }
 
-    public ArrayList<Series> getAllSeries() {
-        String data;
-
-        try {
-            data = sendGet("Series");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return stringToSeries(data);
+    public ArrayList<Series> getAllSeries() throws IOException {
+        return stringToSeries(sendGet("Series"));
     }
 
-    public Series addSeries(Series series) {
-        try {
-            return stringToOneSeries(sendPost("Series", imdbSeriesToJsonString(series)));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public Series addSeries(Series series) throws Exception {
+        return stringToOneSeries(sendPost("Series", imdbSeriesToJsonString(series)));
     }
 
-    public Series getOneSeries(String seriesId) {
-        try {
-            return stringToOneSeries(sendGet("Series/" + seriesId));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
+    public Series getOneSeries(String seriesId) throws IOException {
+        return stringToOneSeries(sendGet("Series/" + seriesId));
     }
 
     public Series updateSeries(Series series) {
@@ -64,6 +44,11 @@ public class ImdbApi extends RestApi {
         JsonParser parser = new JsonParser();
         JsonElement jsonElement = parser.parse(response);
 
+        if(!jsonElement.getAsJsonObject().get("success").getAsBoolean()){
+            throw new IllegalStateException("API success response is false");
+        }
+        jsonElement = jsonElement.getAsJsonObject().get("data");
+
         Series series = Series.createSeries();
         series.setImdbId(jsonElement.getAsJsonObject().get("id").getAsString());
         series.setTitle(jsonElement.getAsJsonObject().get("title").getAsString());
@@ -72,13 +57,13 @@ public class ImdbApi extends RestApi {
 
         //series.setSeasons(new Gson().fromJson(jsonElement.getAsJsonObject().get("seasons"),ArrayList.class));
 
-         for (JsonElement jsonSeason : jsonElement.getAsJsonObject().get("seasons").getAsJsonArray()) {
+        for (JsonElement jsonSeason : jsonElement.getAsJsonObject().get("seasons").getAsJsonArray()) {
             Season season = Season.createSeason(jsonSeason.getAsJsonObject().get("season").getAsInt());
 
             for (JsonElement episodes : jsonSeason.getAsJsonObject().get("episodes").getAsJsonArray()) {
                 JsonObject ep = episodes.getAsJsonObject();
 
-                Episode episode = Episode.createEpisode(ep.get("airDate").getAsString(),ep.get("number").getAsInt());
+                Episode episode = Episode.createEpisode(ep.get("airDate").getAsString(), ep.get("number").getAsInt());
 
                 for (JsonElement torrents : ep.get("torrents").getAsJsonArray()) {
                     JsonObject tr = torrents.getAsJsonObject();
@@ -90,7 +75,7 @@ public class ImdbApi extends RestApi {
                     String upLoader = tr.get("upLoader").getAsString();
                     String upLoaderStatus = tr.get("upLoaderStatus").getAsString();
 
-                    Torrent torrent = TorrentManager.createTorrent(title,date,siteLink,torrentLink,upLoader,upLoaderStatus);
+                    Torrent torrent = TorrentManager.createTorrent(title, date, siteLink, torrentLink, upLoader, upLoaderStatus);
                     episode.addTorrent(torrent);
                 }
 
@@ -111,7 +96,12 @@ public class ImdbApi extends RestApi {
 
         JsonParser parser = new JsonParser();
         JsonElement jsonResponse = parser.parse(response);
-        JsonArray jsonArray = jsonResponse.getAsJsonArray();
+
+        if(!jsonResponse.getAsJsonObject().get("success").getAsBoolean()){
+            throw new IllegalStateException("API success response is false");
+        }
+
+        JsonArray jsonArray = jsonResponse.getAsJsonObject().get("data").getAsJsonArray();
 
         for (JsonElement jsonElement : jsonArray) {
             Series s = Series.createSeries();

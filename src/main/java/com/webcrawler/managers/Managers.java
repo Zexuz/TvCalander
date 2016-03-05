@@ -1,10 +1,8 @@
 package com.webcrawler.managers;
 
 import com.webcrawler.connections.restapi.ImdbApi;
-import com.webcrawler.misc.Common;
 import com.webcrawler.options.Options;
 import com.webcrawler.series.ImdbSeries;
-import com.webcrawler.series.Season;
 import com.webcrawler.series.Series;
 import com.webcrawler.site.imdb.Imdb;
 import com.webcrawler.torrent.Torrent;
@@ -19,9 +17,9 @@ public class Managers {
         change SiteManager to WebScraperManager?
      */
 
+    public Options options;
     private SiteManager siteManager;
     private ImdbApi imdbApi;
-    public Options options;
 
     public Managers() {
         try {
@@ -38,17 +36,17 @@ public class Managers {
     }
 
 
-    public void tick() throws InterruptedException {
+    public void tick() throws Exception {
         //1 get active shows from imdb once every day and post it to the database
         //2 search thePirateBay and other sites after those torrents
         //3 compare ids and torrents.
         //4 if it's a show we are looking for, add the torrent to the database.
 
         ArrayList<Series> seriesShortList = imdbApi.getAllSeries();
-
-
         ArrayList<Series> seriesFullList = new ArrayList<>();
-        boolean scrapeImdb = siteManager.shouldScrapeImdb();
+
+
+        boolean scrapeImdb = imdbApi.shouldScrapeImdb();
 
         if (scrapeImdb) {
             for (String imdbId : siteManager.getImdbIds(0, 50)) {
@@ -89,6 +87,7 @@ public class Managers {
                     }
                 }
             }
+            imdbApi.updateLastAndNextImdbScrape();
         }
 
         //2
@@ -129,14 +128,14 @@ public class Managers {
                                     getEpisode(Integer.parseInt(torrent.getEpisodeNumber())).addTorrent(torrent);
 
 
-                    }catch (IndexOutOfBoundsException e){
+                    } catch (IndexOutOfBoundsException e) {
                         System.err.println("Series episode out of bounds, someone is retarded");
                     }
 
                 }
 
             }
-            if (!series.isSame(oldDataSeries,true)) {
+            if (!series.isSame(oldDataSeries, true)) {
                 imdbApi.updateSeries(series);
                 System.out.printf("Updating series : %s", series.getTitle());
             }

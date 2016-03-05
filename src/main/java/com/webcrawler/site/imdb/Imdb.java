@@ -7,27 +7,26 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Imdb extends Site {
 
-    private Date lastScraped = null;
 
     public Imdb(String url) {
         super(url);
     }
 
+    public static ImdbSeries createImdbSeries(String id) {
+        return new ImdbSeries(id);
+    }
+
     public ArrayList<String> getIds(int start, int end) {
         ArrayList<String> ids = new ArrayList<>();
 
-        lastScraped = new Date();
 
         int count = 50;
 
         if (end < count)
             count = end;
-
-        System.out.println(count);
 
         for (int i = start; i < end; i += count) {
 
@@ -57,16 +56,5 @@ public class Imdb extends Site {
         return ids;
     }
 
-    public static ImdbSeries createImdbSeries(String id) {
-        return new ImdbSeries(id);
-    }
-
-
-    public boolean shouldScrape() {
-        if (lastScraped == null)
-            return true;
-
-        return (new Date().getTime() / 1000) - (lastScraped.getTime() / 1000) > 60 * 60 * 24 * 3; // 3 days
-    }
 
 }

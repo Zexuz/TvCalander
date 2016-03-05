@@ -47,7 +47,4 @@ public class SiteManager {
     }
 
 
-    public boolean shouldScrapeImdb() {
-        return imdb.shouldScrape();
-    }
 }

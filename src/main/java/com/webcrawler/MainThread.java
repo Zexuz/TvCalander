@@ -38,7 +38,7 @@ public class MainThread implements Runnable {
             System.out.println("------sleeping----------------------");
             try {
                 Thread.sleep(1000 * 60);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

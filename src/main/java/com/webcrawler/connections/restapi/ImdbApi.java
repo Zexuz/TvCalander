@@ -139,4 +139,9 @@ public class ImdbApi extends RestApi {
 
         return currentTime.getTime() >= nextScrape.getTime();
     }
+
+    public void updateLastAndNextImdbScrape() throws Exception {
+        long currentTime = new Date().getTime();
+        sendPost("Info", "?lastScraped=" + currentTime + "&nextScrape=" + (currentTime + (60 * 60 * 24 * 3 * 1000)));
+    }
 }

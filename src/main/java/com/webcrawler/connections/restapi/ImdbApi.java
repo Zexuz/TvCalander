@@ -42,6 +42,12 @@ public class ImdbApi extends RestApi {
         return null;
     }
 
+    public void updateLastAndNextImdbScrape() throws Exception {
+        long currentTime = new Date().getTime();
+        String data = "{ \"lastScraped\": \"" + currentTime + "\", \"nextScrape\": \"" + (currentTime + (60 * 60 * 24 * 3 * 1000)) + "\"}";
+        sendPost("Info", data);
+    }
+
     private Series stringToOneSeries(String response) {
         JsonParser parser = new JsonParser();
         JsonElement jsonElement = parser.parse(response);
@@ -140,8 +146,4 @@ public class ImdbApi extends RestApi {
         return currentTime.getTime() >= nextScrape.getTime();
     }
 
-    public void updateLastAndNextImdbScrape() throws Exception {
-        long currentTime = new Date().getTime();
-        sendPost("Info", "?lastScraped=" + currentTime + "&nextScrape=" + (currentTime + (60 * 60 * 24 * 3 * 1000)));
-    }
 }

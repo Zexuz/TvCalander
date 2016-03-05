@@ -6,15 +6,20 @@ public class MainThread implements Runnable {
 
 
     private final static MainThread singleton = new MainThread();
+    public Managers managers;
     private boolean running = false;
     private boolean pause = false;
-
-
-    public Managers managers;
 
     private MainThread() {
         managers = new Managers();
         start();
+    }
+
+    public static MainThread getInstance() {
+        return singleton;
+    }
+
+    public static void main(String args[]) {
     }
 
     @Override
@@ -23,10 +28,15 @@ public class MainThread implements Runnable {
         while (running) {
 
             try {
-                managers.tick();
-                //we now sleep for 1 min
-                System.out.println("------sleeping----------------------");
+                managers.tick(); // if this throws any error atm, we can't complete the tick
+            } catch (Throwable e) {
+                e.printStackTrace();
+                System.out.println("Can't complete tick");
+            }
 
+            //we now sleep for 1 min
+            System.out.println("------sleeping----------------------");
+            try {
                 Thread.sleep(1000 * 60);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -61,13 +71,6 @@ public class MainThread implements Runnable {
 
     public boolean isPause() {
         return pause;
-    }
-
-    public static MainThread getInstance() {
-        return singleton;
-    }
-
-    public static void main(String args[]) {
     }
 
 }

@@ -10,6 +10,7 @@ import java.util.HashMap;
 public class WebConnection {
 
     public static final String HEADER_MOBILE = "Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
+    public static final String HEADER_PC = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36";
     public static final String REFERRER_GOOGLE = "http://www.google.com";
 
     private String header;

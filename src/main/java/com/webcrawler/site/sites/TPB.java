@@ -19,6 +19,7 @@ public class TPB extends Site {
     public TPB(String url) {
         super(url);
         webConn.setCookies(getCookies());
+        webConn.setHeader(WebConnection.HEADER_PC);
     }
 
     public void next() {

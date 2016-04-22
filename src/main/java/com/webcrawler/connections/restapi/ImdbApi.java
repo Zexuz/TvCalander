@@ -138,7 +138,10 @@ public class ImdbApi extends RestApi {
         JsonParser parser = new JsonParser();
         JsonElement jsonElement = parser.parse(response);
 
-        if (!isResponseValid(jsonElement)) throw new IllegalStateException("API success response is false");
+        if (!isResponseValid(jsonElement)) {
+            System.err.println("API success response is false");
+            throw new IllegalStateException("API success response is false");
+        }
 
         Date nextScrape = new Date(jsonElement.getAsJsonObject().get("data").getAsJsonObject().get("nextScrape").getAsLong());
         Date currentTime = new Date();

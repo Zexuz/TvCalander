@@ -27,8 +27,15 @@ public abstract class RestApi {
         System.out.println("\nSending 'GET' request to URL : " + getWholeUrl(method));
         System.out.println("Response Code : " + responseCode);
 
+        InputStream inputStream;
+        if (responseCode != 200) {
+            inputStream = con.getErrorStream();
+        } else {
+            inputStream = con.getInputStream();
+        }
+
         BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
+                new InputStreamReader(inputStream));
         String inputLine;
         StringBuilder response = new StringBuilder();
 
@@ -36,6 +43,10 @@ public abstract class RestApi {
             response.append(inputLine);
         }
         in.close();
+        if(responseCode != 200){
+            System.out.println(response.toString());
+        }
+
 
         return response.toString();
 
